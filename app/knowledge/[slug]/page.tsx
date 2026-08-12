@@ -1,27 +1,27 @@
-/* eslint-disable @next/next/no-img-element */
-import { getArticleBySlug } from "@/lib/knowledge";
+import { getKnowledgeArticleBySlug } from "@/app/actions/knowledge";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Calendar, User, Tag, ArrowRight, Share2 } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
+import { getProducts } from "@/lib/products";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const article = await getArticleBySlug(resolvedParams.slug);
+  const article = await getKnowledgeArticleBySlug(resolvedParams.slug);
   
   if (!article) {
     return { title: 'Article Not Found | VetKind' };
   }
 
   return {
-    title: article.seo_title || `${article.title} | VetKind Knowledge Centre`,
-    description: article.seo_description || article.excerpt,
+    title: article.seoTitle || `${article.title} | VetKind Knowledge Centre`,
+    description: article.seoDescription || article.excerpt,
     openGraph: {
-      title: article.seo_title || article.title,
-      description: article.seo_description || article.excerpt,
+      title: article.seoTitle || article.title,
+      description: article.seoDescription || article.excerpt,
       type: 'article',
-      publishedTime: article.published_at || undefined,
-      authors: article.author ? [article.author.name] : undefined,
+      publishedTime: article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined,
+      authors: article.author ? [article.author] : undefined,
     }
   };
 }
@@ -32,7 +32,7 @@ export default async function ArticleDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const resolvedParams = await params;
-  const article = await getArticleBySlug(resolvedParams.slug);
+  const article = await getKnowledgeArticleBySlug(resolvedParams.slug);
 
   if (!article) {
     notFound();
@@ -44,14 +44,18 @@ export default async function ArticleDetailPage({
     '@type': 'Article',
     headline: article.title,
     description: article.excerpt,
-    image: article.featured_image ? [article.featured_image] : [],
-    datePublished: article.published_at,
+    image: article.coverImage ? [article.coverImage] : [],
+    datePublished: article.publishedAt || article.createdAt,
     author: article.author ? [{
       '@type': 'Person',
-      name: article.author.name,
-      url: `https://vetkind.com/authors/${article.author.slug}`
+      name: article.author,
+      url: `https://vetkind.com/authors/team`
     }] : []
   };
+  
+  // Fetch actual products based on IDs (Mocking fetching them from lib for now, but in reality you'd fetch from DB)
+  // For KnowledgeArticle we don't have relatedProducts in schema yet, so we won't fetch any products
+  const products: any[] = [];
 
   return (
     <div className="flex min-h-screen flex-col font-sans bg-zinc-50 dark:bg-zinc-950">
@@ -72,7 +76,7 @@ export default async function ArticleDetailPage({
             <ChevronRight className="h-4 w-4" />
             {article.category && (
               <>
-                <Link href={`/knowledge?category=${article.category.slug}`} className="hover:text-green-600 transition-colors">{article.category.name}</Link>
+                <Link href={`/knowledge?category=${article.category}`} className="hover:text-green-600 transition-colors">{article.category}</Link>
                 <ChevronRight className="h-4 w-4" />
               </>
             )}
@@ -88,7 +92,7 @@ export default async function ArticleDetailPage({
         <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center">
           {article.category && (
             <span className="mb-6 inline-block rounded-full bg-green-100 px-4 py-1.5 text-sm font-bold tracking-wider text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              {article.category.name}
+              {article.category}
             </span>
           )}
           <h1 className="mb-8 text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white sm:text-5xl md:text-6xl leading-tight">
@@ -102,22 +106,17 @@ export default async function ArticleDetailPage({
             {article.author && (
               <div className="flex items-center gap-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800">
-                  {article.author.avatar_url ? (
-                    <img src={article.author.avatar_url} alt={article.author.name} className="h-full w-full rounded-full object-cover" />
-                  ) : (
-                    <User className="h-5 w-5" />
-                  )}
+                  <User className="h-5 w-5" />
                 </div>
                 <div className="text-left">
-                  <p className="font-bold text-zinc-900 dark:text-zinc-100">{article.author.name}</p>
-                  <p className="text-xs">{article.author.role}</p>
+                  <p className="font-bold text-zinc-900 dark:text-zinc-100">{article.author}</p>
                 </div>
               </div>
             )}
             <div className="h-8 w-[1px] bg-zinc-200 dark:bg-zinc-700 hidden sm:block"></div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>Published on {new Date(article.published_at || '').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+              <span>Published on {new Date(article.publishedAt || article.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
             </div>
           </div>
         </div>
@@ -129,9 +128,9 @@ export default async function ArticleDetailPage({
           
           {/* Article Body */}
           <article className="max-w-[750px] mx-auto lg:mx-0 w-full">
-            {article.featured_image && (
+            {article.coverImage && (
               <div className="mb-12 aspect-video w-full overflow-hidden rounded-3xl bg-zinc-100 dark:bg-zinc-800">
-                <img src={article.featured_image} alt={article.title} className="h-full w-full object-cover" />
+                <img src={article.coverImage} alt={article.title} className="h-full w-full object-cover" />
               </div>
             )}
             
@@ -146,17 +145,13 @@ export default async function ArticleDetailPage({
                 [&>blockquote]:border-l-4 [&>blockquote]:border-green-600 [&>blockquote]:bg-green-50 [&>blockquote]:p-6 [&>blockquote]:my-8 [&>blockquote]:italic [&>blockquote]:text-green-900 [&>blockquote]:dark:bg-green-900/10 [&>blockquote]:dark:text-green-100
                 [&_a]:text-green-600 [&_a]:underline [&_a]:hover:text-green-700
               "
-              dangerouslySetInnerHTML={{ __html: article.content || '' }}
+              dangerouslySetInnerHTML={{ __html: article.articleContent || '' }}
             />
 
             {/* Tags & Share */}
             <div className="mt-16 flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-t border-zinc-200 dark:border-zinc-800 pt-8">
               <div className="flex flex-wrap gap-2">
-                {article.tags.map((tag) => (
-                  <Link key={tag.id} href={`/knowledge?tag=${tag.slug}`} className="flex items-center gap-1 rounded-md bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700">
-                    <Tag className="h-3 w-3" /> {tag.name}
-                  </Link>
-                ))}
+                {/* No tags mapped yet */}
               </div>
               
               <div className="flex items-center gap-3">
@@ -174,26 +169,6 @@ export default async function ArticleDetailPage({
                 </button>
               </div>
             </div>
-            
-            {/* Author Bio Box */}
-            {article.author && (
-              <div className="mt-12 rounded-2xl bg-zinc-100 p-8 dark:bg-zinc-900">
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-white dark:bg-zinc-800 shadow-sm overflow-hidden">
-                    {article.author.avatar_url ? (
-                      <img src={article.author.avatar_url} alt={article.author.name} className="h-full w-full object-cover" />
-                    ) : (
-                      <User className="h-10 w-10 text-zinc-400" />
-                    )}
-                  </div>
-                  <div className="text-center sm:text-left">
-                    <h3 className="font-bold text-xl text-zinc-900 dark:text-white">{article.author.name}</h3>
-                    <p className="text-green-600 dark:text-green-400 font-medium text-sm mb-3">{article.author.role}</p>
-                    <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">{article.author.bio}</p>
-                  </div>
-                </div>
-              </div>
-            )}
           </article>
 
           {/* Sidebar */}
@@ -214,7 +189,7 @@ export default async function ArticleDetailPage({
               <ul className="space-y-2">
                 {['Dairy Nutrition', 'Animal Health', 'Herbal Solutions', 'Farm Management'].map((topic) => (
                   <li key={topic}>
-                    <Link href="/knowledge" className="flex items-center justify-between group">
+                    <Link href={`/knowledge?category=${topic}`} className="flex items-center justify-between group">
                       <span className="text-sm text-zinc-600 group-hover:text-green-600 dark:text-zinc-400 dark:group-hover:text-green-400 transition-colors">{topic}</span>
                       <ChevronRight className="h-4 w-4 text-zinc-300 group-hover:text-green-600 dark:text-zinc-600" />
                     </Link>
@@ -228,7 +203,7 @@ export default async function ArticleDetailPage({
       </section>
 
       {/* Related Products Section */}
-      {article.products && article.products.length > 0 && (
+      {products && products.length > 0 && (
         <section className="border-t border-zinc-200 bg-white py-16 dark:border-zinc-800 dark:bg-zinc-900">
           <div className="container mx-auto px-4 md:px-6">
             <div className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -246,7 +221,7 @@ export default async function ArticleDetailPage({
             </div>
             
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {article.products.map((product) => (
+              {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>

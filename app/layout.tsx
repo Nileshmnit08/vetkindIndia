@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/footer/Footer";
 import { auth } from "@/auth";
+import { getFilterOptions } from "@/lib/products";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,6 +24,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const session = await auth();
   const isLoggedIn = !!session?.user;
   const userRole = session?.user?.role;
+  const { species } = await getFilterOptions();
 
   return (
     <html
@@ -34,7 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <main className="flex-1 flex flex-col">
           {children}
         </main>
-        <Footer />
+        <Footer species={species} />
       </body>
     </html>
   );

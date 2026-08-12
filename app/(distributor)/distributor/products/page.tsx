@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Search, Download, ExternalLink } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
 
 const prisma = new PrismaClient();
 
@@ -62,7 +63,7 @@ export default async function DistributorProductsPage() {
                 </p>
                 {product.price && (
                   <p className="mt-4 text-lg font-bold text-green-600 dark:text-green-500">
-                    ₹{product.price} <span className="text-xs font-normal text-zinc-500">Distributor Price</span>
+                    {formatPrice(product.price)} <span className="text-xs font-normal text-zinc-500">Distributor Price</span>
                   </p>
                 )}
               </div>

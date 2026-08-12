@@ -1,25 +1,14 @@
-import { getSolutions } from "@/lib/solutions";
+import { getSolutions } from "@/app/actions/solutions";
 import Link from "next/link";
-import { ArrowRight, Activity, ShieldCheck, Zap, Droplet, Heart, Thermometer, Wheat, SearchX } from "lucide-react";
+import { ArrowRight, SearchX } from "lucide-react";
 import { SolutionsToolbar } from "@/components/solutions/SolutionsToolbar";
 import { SolutionsFilters } from "@/components/solutions/SolutionsFilters";
 import { MobileSolutionFilters } from "@/components/solutions/MobileSolutionFilters";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
 
 export const metadata = {
   title: "Veterinary Solutions | VetKind",
   description: "Explore our problem-based nutritional and veterinary solutions for dairy, poultry, and companion animals.",
-};
-
-// Map slugs to icons dynamically for a better visual experience
-const iconMap: Record<string, React.ElementType> = {
-  'milk-production': Droplet,
-  'fertility': Heart,
-  'mastitis-udder-health': ShieldCheck,
-  'rumen-health': Activity,
-  'liver-metabolism': Zap,
-  'immunity': ShieldCheck,
-  'heat-stress': Thermometer,
-  'mineral-nutrition': Wheat,
 };
 
 export default async function SolutionsPage({
@@ -28,7 +17,8 @@ export default async function SolutionsPage({
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) {
   const resolvedParams = await searchParams;
-  const solutions = await getSolutions();
+  const solutionsResponse = await getSolutions(undefined, "PUBLISHED");
+  const solutions = solutionsResponse.success ? solutionsResponse.data || [] : [];
 
   // Apply search and filter
   let filteredSolutions = solutions;
@@ -36,9 +26,8 @@ export default async function SolutionsPage({
   if (resolvedParams.search) {
     const q = resolvedParams.search.toLowerCase();
     filteredSolutions = filteredSolutions.filter(s => 
-      s.name.toLowerCase().includes(q) || 
-      s.problem_explanation.toLowerCase().includes(q) ||
-      (s.common_signs && s.common_signs.some(sign => sign.toLowerCase().includes(q)))
+      s.title.toLowerCase().includes(q) || 
+      (s.shortSummary && s.shortSummary.toLowerCase().includes(q))
     );
   }
 
@@ -95,8 +84,6 @@ export default async function SolutionsPage({
             ) : (
               <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
                 {filteredSolutions.map((solution) => {
-                  const Icon = iconMap[solution.slug] || Activity;
-                  
                   return (
                     <Link 
                       key={solution.id} 
@@ -105,13 +92,13 @@ export default async function SolutionsPage({
                     >
                       <div>
                         <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-green-50 text-green-600 transition-colors group-hover:bg-green-600 group-hover:text-white dark:bg-zinc-800 dark:text-green-400 dark:group-hover:bg-green-600">
-                          <Icon className="h-7 w-7" />
+                          <DynamicIcon name={solution.iconName} className="h-7 w-7" />
                         </div>
                         <h2 className="mb-3 text-xl font-bold text-zinc-900 dark:text-white">
-                          {solution.name}
+                          {solution.title}
                         </h2>
                         <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3">
-                          {solution.problem_explanation}
+                          {solution.shortSummary}
                         </p>
                       </div>
                       <div className="flex items-center text-sm font-bold text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300">

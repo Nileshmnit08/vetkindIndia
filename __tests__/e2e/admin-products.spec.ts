@@ -22,6 +22,9 @@ test.describe('Admin Products Route Mismatch Bug', () => {
     // Assert it does NOT contain the Inquiries heading
     await expect(page.locator('h1', { hasText: 'Inquiries' })).not.toBeVisible();
     
+    // Assert it does NOT contain the storefront hero text
+    await expect(page.locator('h1', { hasText: 'Advanced Veterinary Nutrition' })).not.toBeVisible();
+    
     // Assert the description doesn't match inquiries
     const bodyText = await page.locator('body').innerText();
     expect(bodyText).not.toContain('View and manage contact form submissions and bulk requests.');

@@ -1,5 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { Plus } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { ProductFilters } from "@/components/admin/ProductFilters";
 import { ProductTableActions } from "@/components/admin/ProductTableActions";
@@ -9,7 +10,7 @@ const prisma = new PrismaClient();
 interface AdminProductsPageProps {
   searchParams: Promise<{
     q?: string;
-    category?: string;
+    species?: string;
     status?: string;
   }>;
 }
@@ -17,7 +18,7 @@ interface AdminProductsPageProps {
 export default async function AdminProductsPage({ searchParams }: AdminProductsPageProps) {
   const resolvedParams = await searchParams;
   const query = resolvedParams.q || "";
-  const category = resolvedParams.category || "";
+  const species = resolvedParams.species || "";
   const status = resolvedParams.status || "";
 
   // Build the Prisma where clause dynamically based on searchParams
@@ -27,8 +28,8 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
     where.name = { contains: query };
   }
   
-  if (category) {
-    where.category = category;
+  if (species) {
+    where.species = { slug: species };
   }
   
   if (status) {
@@ -38,7 +39,13 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
 
   const products = await prisma.product.findMany({
     where,
+    include: { species: true },
     orderBy: { createdAt: "desc" },
+  });
+
+  const speciesOptions = await prisma.species.findMany({
+    select: { id: true, name: true, slug: true },
+    orderBy: { name: "asc" },
   });
 
   return (
@@ -61,7 +68,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
         </div>
       </div>
 
-      <ProductFilters />
+      <ProductFilters speciesOptions={speciesOptions} />
 
       <div className="mt-4 flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -74,7 +81,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                       Product
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-zinc-900 dark:text-zinc-200">
-                      Category
+                      Species
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-zinc-900 dark:text-zinc-200">
                       Status
@@ -110,7 +117,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-zinc-500 dark:text-zinc-400">
-                          {product.category}
+                          {(product as any).species?.name || "-"}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-zinc-500 dark:text-zinc-400">
                           <span className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
@@ -122,7 +129,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                           </span>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-zinc-500 dark:text-zinc-400">
-                          {product.price ? `₹${product.price.toFixed(2)}` : "-"}
+                          {product.price != null ? formatPrice(product.price) : "-"}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-zinc-500 dark:text-zinc-400">
                           {new Date(product.createdAt).toLocaleDateString()}

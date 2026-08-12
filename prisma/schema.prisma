@@ -37,11 +37,34 @@ model DistributorProfile {
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Species {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  featured    Boolean   @default(false)
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  products    Product[]
+}
+
 model Product {
   id               String    @id @default(cuid())
   name             String
   slug             String    @unique
-  category         String
+  
+  speciesId        String?
+  species          Species?  @relation(fields: [speciesId], references: [id], onDelete: SetNull)
+
+  category         String?
+  benefits         String?
+  productType      String?
+  badges           String?
+
   packSize         String?
   description      String?
   shortDescription String?
@@ -82,4 +105,100 @@ model Inquiry {
   updatedAt     DateTime  @updatedAt
 
   user          User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+
+model Solution {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  shortSummary    String?
+  fullContent     String?
+  heroImage       String?
+  iconName        String?
+  speciesTags     String?
+  benefits        String?
+  relatedProducts String?
+  featured        Boolean   @default(false)
+  sortOrder       Int       @default(0)
+  status          String    @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model KnowledgeArticle {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  category        String?
+  excerpt         String?
+  coverImage      String?
+  articleContent  String?
+  author          String?
+  readTime        String?
+  publishedAt     DateTime?
+  featured        Boolean   @default(false)
+  status          String    @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+
+model ResearchArticle {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  category        String?
+  excerpt         String?
+  coverImage      String?
+  articleContent  String?
+  author          String?
+  publishedAt     DateTime?
+  status          String    @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model NewsEvent {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  summary         String?
+  coverImage      String?
+  content         String?
+  type            String    @default("NEWS") // NEWS or EVENT
+  eventDate       DateTime?
+  location        String?
+  publishedAt     DateTime?
+  featured        Boolean   @default(false)
+  status          String    @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model BlogArticle {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  excerpt         String?
+  coverImage      String?
+  articleContent  String?
+  author          String?
+  category        String?
+  tags            String?
+  publishedAt     DateTime?
+  featured        Boolean   @default(false)
+  status          String    @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }

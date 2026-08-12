@@ -1,4 +1,5 @@
 import { getProductBySlug } from "@/lib/products";
+import { formatPrice } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, ShieldCheck, MessageCircle, Phone, Star } from "lucide-react";
@@ -136,7 +137,7 @@ export default async function ProductDetailPage({
               <div className="mb-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
                 <div className="flex items-end gap-4 mb-4">
                   <span className="text-4xl font-bold text-zinc-900 dark:text-white">
-                    ₹{product.price?.toLocaleString()}
+                    {product.price != null ? formatPrice(product.price) : ""}
                   </span>
                   <span className="text-sm font-medium text-zinc-500 mb-1">
                     MRP (Inclusive of all taxes)

@@ -16,13 +16,18 @@ type Product = {
   featured: boolean;
   bestseller: boolean;
   published: boolean;
+  speciesId?: string | null;
+  benefits?: string | null;
+  productType?: string | null;
+  badges?: string | null;
 };
 
 interface ProductFormProps {
   initialData?: Product;
+  speciesOptions: { id: string; name: string }[];
 }
 
-export function ProductForm({ initialData }: ProductFormProps) {
+export function ProductForm({ initialData, speciesOptions }: ProductFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +36,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
     slug: initialData?.slug || "",
-    category: initialData?.category || "Dairy",
+    category: initialData?.category || "",
+    speciesId: initialData?.speciesId || "",
+    benefits: initialData?.benefits || "",
+    productType: initialData?.productType || "",
+    badges: initialData?.badges || "",
     shortDescription: initialData?.shortDescription || "",
     description: initialData?.description || "",
     price: initialData?.price?.toString() || "",
@@ -126,23 +135,71 @@ export function ProductForm({ initialData }: ProductFormProps) {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="category" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Category *</label>
+          <label htmlFor="speciesId" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Species</label>
           <select
-            id="category"
-            name="category"
-            required
-            value={formData.category}
+            id="speciesId"
+            name="speciesId"
+            value={formData.speciesId}
             onChange={handleChange}
             className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
           >
-            <option value="Dairy">Dairy</option>
-            <option value="Poultry">Poultry</option>
-            <option value="Small Ruminants">Small Ruminants</option>
-            <option value="Aqua">Aqua</option>
-            <option value="Swine">Swine</option>
-            <option value="Equine">Equine</option>
-            <option value="Pet">Pet</option>
+            <option value="">Select Species...</option>
+            {speciesOptions.map(spec => (
+              <option key={spec.id} value={spec.id}>{spec.name}</option>
+            ))}
           </select>
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="category" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Subcategory</label>
+          <input
+            type="text"
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            placeholder="e.g. Nutrition, Supplements"
+            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label htmlFor="benefits" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Benefits / Use cases (comma separated)</label>
+          <input
+            type="text"
+            id="benefits"
+            name="benefits"
+            value={formData.benefits}
+            onChange={handleChange}
+            placeholder="e.g. Immunity, Gut Health"
+            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="productType" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Product Type</label>
+          <input
+            type="text"
+            id="productType"
+            name="productType"
+            value={formData.productType}
+            onChange={handleChange}
+            placeholder="e.g. Powder, Liquid"
+            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="badges" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Badges (comma separated)</label>
+          <input
+            type="text"
+            id="badges"
+            name="badges"
+            value={formData.badges}
+            onChange={handleChange}
+            placeholder="e.g. New, Bestseller"
+            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+          />
         </div>
         
         <div className="space-y-2">

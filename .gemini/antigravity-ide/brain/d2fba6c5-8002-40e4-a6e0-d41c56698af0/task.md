@@ -1,0 +1,9 @@
+- [ ] Add `formatPrice` utility to `lib/utils.ts`
+- [ ] Update `components/products/ProductCard.tsx` with `formatPrice`
+- [ ] Update `app/products/[slug]/page.tsx` with `formatPrice`
+- [ ] Update `app/(distributor)/distributor/products/page.tsx` with `formatPrice`
+- [ ] Update `app/(admin)/admin/products/page.tsx` with `formatPrice`
+- [ ] Update `lib/products/index.ts` for dynamic categories in `getFilterOptions`
+- [ ] Add conditional rendering to `components/products/CatalogueFilters.tsx`
+- [ ] Create E2E test `__tests__/e2e/public-products.spec.ts`
+- [ ] Run E2E test and verify

@@ -25,6 +25,8 @@ export function Header({ isLoggedIn = false, userRole = null }: HeaderProps) {
     { href: "/solutions", label: "Solutions" },
     { href: "/knowledge", label: "Knowledge" },
     { href: "/research", label: "Research" },
+    { href: "/news-events", label: "News" },
+    { href: "/blog", label: "Blog" },
     { href: "/about", label: "About" },
   ];
 

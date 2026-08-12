@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ProductWithRelations } from "@/lib/products";
+import { formatPrice } from "@/lib/utils";
 
 export function ProductCard({ product }: { product: ProductWithRelations }) {
   // Use the primary image if available, else fallback
@@ -46,7 +47,7 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
         
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
            <span className="font-bold text-zinc-900 dark:text-zinc-100">
-             ₹{product.price?.toLocaleString()}
+             {product.price != null ? formatPrice(product.price) : ""}
            </span>
            <span className="text-sm font-medium text-green-600 group-hover:text-green-700 dark:text-green-400 dark:group-hover:text-green-300 transition-colors">
              View Details &rarr;

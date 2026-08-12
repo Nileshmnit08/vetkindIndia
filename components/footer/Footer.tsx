@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FlaskConical, Phone, Mail, MapPin } from "lucide-react";
 
-export function Footer() {
+export function Footer({ species = [] }: { species?: { name: string, slug: string }[] }) {
   const pathname = usePathname();
   
   if (pathname?.startsWith('/admin') || pathname?.startsWith('/distributor')) {
@@ -44,22 +44,29 @@ export function Footer() {
           </div>
           
           <div>
-            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-white font-semibold mb-4">Catalogue</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link href="/products" className="hover:text-green-400 transition-colors">Products</Link></li>
-              <li><Link href="/solutions" className="hover:text-green-400 transition-colors">Solutions</Link></li>
-              <li><Link href="/research" className="hover:text-green-400 transition-colors">Research</Link></li>
-              <li><Link href="/about" className="hover:text-green-400 transition-colors">About Us</Link></li>
-              <li><Link href="/knowledge" className="hover:text-green-400 transition-colors">Knowledge Centre</Link></li>
+              <li><Link href="/products" className="hover:text-green-400 transition-colors">All Products</Link></li>
+              {species.map(spec => (
+                <li key={spec.slug}>
+                  <Link href={`/products?species=${spec.slug}`} className="hover:text-green-400 transition-colors">
+                    {spec.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">Legal</h4>
+            <h4 className="text-white font-semibold mb-4">Learn & Partner</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link href="/privacy-policy" className="hover:text-green-400 transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms-of-service" className="hover:text-green-400 transition-colors">Terms of Service</Link></li>
-              <li><Link href="/cookie-policy" className="hover:text-green-400 transition-colors">Cookie Policy</Link></li>
+              <li><Link href="/solutions" className="hover:text-green-400 transition-colors">Targeted Solutions</Link></li>
+              <li><Link href="/knowledge" className="hover:text-green-400 transition-colors">Knowledge Centre</Link></li>
+              <li><Link href="/research" className="hover:text-green-400 transition-colors">Research</Link></li>
+              <li><Link href="/news-events" className="hover:text-green-400 transition-colors">News & Events</Link></li>
+              <li><Link href="/blog" className="hover:text-green-400 transition-colors">Blog</Link></li>
+              <li><Link href="/distributor-inquiry" className="hover:text-green-400 transition-colors">Become a Distributor</Link></li>
+              <li><Link href="/about" className="hover:text-green-400 transition-colors">About Us</Link></li>
             </ul>
           </div>
 

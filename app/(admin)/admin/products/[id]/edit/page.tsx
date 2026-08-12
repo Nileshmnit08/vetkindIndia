@@ -3,17 +3,19 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { PrismaClient } from "@prisma/client";
 import { notFound } from "next/navigation";
+import { getSpeciesList } from "@/app/actions/species";
 
 const prisma = new PrismaClient();
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function EditProductPage({ params }: PageProps) {
-  const { id } = params;
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
   
   const product = await prisma.product.findUnique({
     where: { id }
@@ -22,6 +24,8 @@ export default async function EditProductPage({ params }: PageProps) {
   if (!product) {
     notFound();
   }
+
+  const speciesList = await getSpeciesList();
 
   return (
     <div className="space-y-6">
@@ -42,7 +46,7 @@ export default async function EditProductPage({ params }: PageProps) {
       </div>
 
       <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <ProductForm initialData={product} />
+        <ProductForm initialData={product} speciesOptions={speciesList} />
       </div>
     </div>
   );

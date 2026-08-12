@@ -1,8 +1,10 @@
-import { PrismaClient, Product, Prisma } from "@prisma/client";
+import { PrismaClient, Product, Prisma, Species } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export type ProductWithRelations = Product;
+export type ProductWithRelations = Product & {
+  species: Species | null;
+};
 
 export interface FetchProductsOptions {
   search?: string;
@@ -10,6 +12,7 @@ export interface FetchProductsOptions {
   species?: string;
   benefit?: string;
   productType?: string;
+  badge?: string;
   sortBy?: 'featured' | 'popular' | 'newest' | 'price_asc' | 'price_desc';
   page?: number;
   limit?: number;
@@ -17,7 +20,7 @@ export interface FetchProductsOptions {
 
 export async function getProducts(options: FetchProductsOptions = {}): Promise<{ data: ProductWithRelations[], count: number }> {
   const where: Prisma.ProductWhereInput = {
-    published: true, // Only show published products on public pages
+    published: true,
   };
 
   if (options.search) {
@@ -25,12 +28,27 @@ export async function getProducts(options: FetchProductsOptions = {}): Promise<{
   }
   
   if (options.category) {
-    where.category = options.category;
+    where.category = { contains: options.category };
   }
-  
-  // Note: species and benefit filtering is currently stubbed out because the Prisma schema is simplified
-  // and doesn't contain these relations yet.
-  
+
+  if (options.species) {
+    where.species = {
+      slug: options.species
+    };
+  }
+
+  if (options.benefit) {
+    where.benefits = { contains: options.benefit };
+  }
+
+  if (options.productType) {
+    where.productType = { contains: options.productType };
+  }
+
+  if (options.badge) {
+    where.badges = { contains: options.badge };
+  }
+
   let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: 'desc' };
   
   switch (options.sortBy) {
@@ -62,18 +80,22 @@ export async function getProducts(options: FetchProductsOptions = {}): Promise<{
       orderBy,
       skip,
       take: limit,
+      include: {
+        species: true
+      }
     }),
     prisma.product.count({ where }),
   ]);
-
-  console.log('GET_PRODUCTS CALLED. Count:', count, 'Products:', products.map((p) => p.name));
 
   return { data: products, count };
 }
 
 export async function getProductBySlug(slug: string): Promise<ProductWithRelations | null> {
   const product = await prisma.product.findUnique({
-    where: { slug }
+    where: { slug },
+    include: {
+      species: true
+    }
   });
 
   if (!product || !product.published) return null;
@@ -82,19 +104,41 @@ export async function getProductBySlug(slug: string): Promise<ProductWithRelatio
 }
 
 export async function getFilterOptions() {
-  // Using simplified categories derived from Prisma for now
+  // Fetch active species
+  const species = await prisma.species.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: 'asc' },
+    select: { id: true, name: true, slug: true, image: true, featured: true }
+  });
+
+  // To gracefully handle empty options, we'll fetch distinct values 
+  // for category, benefits, productType from *published* products.
+  const products = await prisma.product.findMany({
+    where: { published: true },
+    include: { species: true }
+  });
+
+  const categories = new Set<string>();
+  const benefits = new Set<string>();
+  const productTypes = new Set<string>();
+  const badges = new Set<string>();
+  const activeSpeciesIds = new Set<string>();
+
+  products.forEach(p => {
+    if (p.category) p.category.split(',').map(v => v.trim()).filter(Boolean).forEach(v => categories.add(v));
+    if (p.benefits) p.benefits.split(',').map(v => v.trim()).filter(Boolean).forEach(v => benefits.add(v));
+    if (p.productType) p.productType.split(',').map(v => v.trim()).filter(Boolean).forEach(v => productTypes.add(v));
+    if (p.badges) p.badges.split(',').map(v => v.trim()).filter(Boolean).forEach(v => badges.add(v));
+    if (p.species) activeSpeciesIds.add(p.species.id);
+  });
+
+  // Do not filter out species with zero products, so that Browse by Species and Footer always show the full taxonomy
+
   return {
-    categories: [
-      { id: '1', name: 'Dairy', slug: 'Dairy' },
-      { id: '2', name: 'Poultry', slug: 'Poultry' },
-      { id: '3', name: 'Small Ruminants', slug: 'Small Ruminants' },
-      { id: '4', name: 'Aqua', slug: 'Aqua' },
-      { id: '5', name: 'Swine', slug: 'Swine' },
-      { id: '6', name: 'Equine', slug: 'Equine' },
-      { id: '7', name: 'Pet', slug: 'Pet' },
-    ],
-    species: [],
-    benefits: [],
-    productTypes: [],
+    species: species,
+    categories: Array.from(categories).map(c => ({ id: c, name: c, slug: c })),
+    benefits: Array.from(benefits).map(b => ({ id: b, name: b, slug: b })),
+    productTypes: Array.from(productTypes),
+    badges: Array.from(badges).map(b => ({ id: b, name: b, slug: b })),
   };
 }

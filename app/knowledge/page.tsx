@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { getArticles, getCategories } from "@/lib/knowledge";
+import { getKnowledgeArticles } from "@/app/actions/knowledge";
 import Link from "next/link";
 import { BookOpen, Calendar, Clock, ChevronRight, FileSearch } from "lucide-react";
 import { CategoryFilters } from "@/components/knowledge/CategoryFilters";
@@ -13,14 +13,10 @@ export async function generateMetadata({
   const categorySlug = resolvedParams.category;
 
   if (categorySlug) {
-    const categories = await getCategories();
-    const activeCategory = categories.find(c => c.slug === categorySlug);
-    if (activeCategory) {
-      return {
-        title: `${activeCategory.name} | Knowledge Centre | VetKind`,
-        description: `${activeCategory.name}-backed veterinary nutrition insights and farm management tips from VetKind.`,
-      };
-    }
+    return {
+      title: `${categorySlug} | Knowledge Centre | VetKind`,
+      description: `${categorySlug}-backed veterinary nutrition insights and farm management tips from VetKind.`,
+    };
   }
 
   return {
@@ -37,9 +33,16 @@ export default async function KnowledgeHubPage({
   const resolvedParams = await searchParams;
   const categorySlug = resolvedParams.category;
 
-  const categories = await getCategories();
-  const articles = await getArticles(categorySlug);
+  const articlesResponse = await getKnowledgeArticles(undefined, categorySlug, "PUBLISHED");
+  const articles = articlesResponse.success ? articlesResponse.data || [] : [];
   
+  const categories = [
+    { id: "c1", slug: "Dairy nutrition", name: "Dairy nutrition", description: null },
+    { id: "c2", slug: "Animal health", name: "Animal health", description: null },
+    { id: "c3", slug: "Feed technology", name: "Feed technology", description: null },
+    { id: "c4", slug: "Farm management", name: "Farm management", description: null },
+  ];
+
   const activeCategory = categorySlug 
     ? categories.find(c => c.slug === categorySlug) 
     : null;
@@ -49,12 +52,7 @@ export default async function KnowledgeHubPage({
   let subheading = "Science-backed articles, farm management strategies, and nutritional insights from our veterinary experts.";
   
   if (activeCategory) {
-    if (activeCategory.slug === 'research') {
-      heading = "Research & Clinical Insights";
-    } else {
-      heading = `${activeCategory.name} Knowledge`;
-    }
-    subheading = activeCategory.description || subheading;
+    heading = `${activeCategory.name} Knowledge`;
   }
 
   // Conditional Layout Logic
@@ -62,6 +60,9 @@ export default async function KnowledgeHubPage({
   let gridArticles = articles;
 
   if (articles.length >= 3) {
+    featuredArticle = articles[0];
+    gridArticles = articles.slice(1);
+  } else if (articles.length > 0) {
     featuredArticle = articles[0];
     gridArticles = articles.slice(1);
   }
@@ -128,8 +129,8 @@ export default async function KnowledgeHubPage({
               <div className="mb-16 overflow-hidden rounded-3xl bg-white shadow-xl shadow-zinc-200/50 dark:bg-zinc-900 dark:shadow-none border border-zinc-100 dark:border-zinc-800 transition-all hover:shadow-2xl">
                 <Link href={`/knowledge/${featuredArticle.slug}`} className="grid lg:grid-cols-2 group">
                   <div className="relative aspect-video lg:aspect-auto bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
-                    {featuredArticle.featured_image ? (
-                      <img src={featuredArticle.featured_image} alt={featuredArticle.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    {featuredArticle.coverImage ? (
+                      <img src={featuredArticle.coverImage} alt={featuredArticle.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     ) : (
                       <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-green-50 to-green-100 text-green-600 dark:from-zinc-800 dark:to-zinc-900 dark:text-green-500 p-12 text-center">
                         <BookOpen className="h-16 w-16 opacity-50 mb-4" />
@@ -140,7 +141,7 @@ export default async function KnowledgeHubPage({
                   <div className="flex flex-col justify-center p-8 lg:p-12">
                     {featuredArticle.category && (
                       <span className="mb-4 inline-block w-fit rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                        {featuredArticle.category.name}
+                        {featuredArticle.category}
                       </span>
                     )}
                     <h2 className="mb-4 text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
@@ -152,11 +153,11 @@ export default async function KnowledgeHubPage({
                     <div className="mt-auto flex items-center justify-between text-sm text-zinc-500 border-t border-zinc-100 pt-6 dark:border-zinc-800">
                       <div className="flex items-center gap-4">
                         {featuredArticle.author && (
-                          <span className="font-medium text-zinc-900 dark:text-zinc-200">{featuredArticle.author.name}</span>
+                          <span className="font-medium text-zinc-900 dark:text-zinc-200">{featuredArticle.author}</span>
                         )}
                         <span className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
-                          {new Date(featuredArticle.published_at || '').toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          {featuredArticle.publishedAt ? new Date(featuredArticle.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : new Date(featuredArticle.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </span>
                       </div>
                       <span className="flex items-center font-bold text-green-600 dark:text-green-400">
@@ -177,8 +178,8 @@ export default async function KnowledgeHubPage({
                 {gridArticles.map((article) => (
                   <Link key={article.id} href={`/knowledge/${article.slug}`} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-zinc-200 transition-all hover:-translate-y-1 hover:shadow-xl dark:bg-zinc-900 dark:border-zinc-800">
                     <div className="relative aspect-video bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
-                      {article.featured_image ? (
-                        <img src={article.featured_image} alt={article.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      {article.coverImage ? (
+                        <img src={article.coverImage} alt={article.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-zinc-100 text-zinc-300 dark:bg-zinc-800 dark:text-zinc-700">
                           <BookOpen className="h-10 w-10" />
@@ -186,7 +187,7 @@ export default async function KnowledgeHubPage({
                       )}
                       {article.category && (
                         <div className="absolute top-4 left-4 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-xs font-bold text-zinc-900 shadow-sm dark:bg-zinc-900/90 dark:text-zinc-100">
-                          {article.category.name}
+                          {article.category}
                         </div>
                       )}
                     </div>
@@ -200,12 +201,14 @@ export default async function KnowledgeHubPage({
                       <div className="flex items-center gap-4 text-xs text-zinc-500">
                         <span className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
-                          {new Date(article.published_at || '').toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          5 min read
-                        </span>
+                        {article.readTime && (
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {article.readTime}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </Link>

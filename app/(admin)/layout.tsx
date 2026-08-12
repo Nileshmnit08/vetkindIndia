@@ -8,7 +8,11 @@ import {
   Users, 
   MessageSquare,
   LogOut,
-  FlaskConical
+  FlaskConical,
+  BriefcaseMedical,
+  BookOpen,
+  Megaphone,
+  FileText
 } from "lucide-react";
 
 export default async function AdminLayout({
@@ -29,6 +33,14 @@ export default async function AdminLayout({
     { name: 'Inquiries', href: '/admin/inquiries', icon: MessageSquare },
   ];
 
+  const contentNavigation = [
+    { name: 'Solutions', href: '/admin/solutions', icon: BriefcaseMedical },
+    { name: 'Knowledge', href: '/admin/knowledge', icon: BookOpen },
+    { name: 'Research', href: '/admin/research', icon: FlaskConical },
+    { name: 'News & Events', href: '/admin/news-events', icon: Megaphone },
+    { name: 'Blog', href: '/admin/blog', icon: FileText },
+  ];
+
   return (
     <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Sidebar */}
@@ -45,6 +57,25 @@ export default async function AdminLayout({
         <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
           <nav className="mt-5 flex-1 space-y-1 px-4 text-sm">
             {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+              >
+                <item.icon
+                  className="mr-3 h-5 w-5 flex-shrink-0 text-zinc-400 group-hover:text-green-600 dark:group-hover:text-green-500"
+                  aria-hidden="true"
+                />
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+          
+          <div className="px-4 mt-8 mb-2">
+            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider dark:text-zinc-400">Content</h3>
+          </div>
+          <nav className="flex-1 space-y-1 px-4 text-sm">
+            {contentNavigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}

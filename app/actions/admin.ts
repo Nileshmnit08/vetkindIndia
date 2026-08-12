@@ -26,6 +26,11 @@ export async function createProduct(formData: FormData) {
   const price = priceRaw ? parseFloat(priceRaw as string) : null;
   const image = formData.get("image") as string || "";
   
+  const speciesId = formData.get("speciesId") as string || null;
+  const benefits = formData.get("benefits") as string || null;
+  const productType = formData.get("productType") as string || null;
+  const badges = formData.get("badges") as string || null;
+
   const featured = formData.get("featured") === "true";
   const bestseller = formData.get("bestseller") === "true";
   const published = formData.get("published") === "true";
@@ -36,6 +41,10 @@ export async function createProduct(formData: FormData) {
         name,
         slug,
         category,
+        speciesId,
+        benefits,
+        productType,
+        badges,
         shortDescription,
         description,
         price,
@@ -67,6 +76,11 @@ export async function updateProduct(id: string, formData: FormData) {
   const price = priceRaw ? parseFloat(priceRaw as string) : null;
   const image = formData.get("image") as string || "";
   
+  const speciesId = formData.get("speciesId") as string || null;
+  const benefits = formData.get("benefits") as string || null;
+  const productType = formData.get("productType") as string || null;
+  const badges = formData.get("badges") as string || null;
+  
   const featured = formData.get("featured") === "true";
   const bestseller = formData.get("bestseller") === "true";
   const published = formData.get("published") === "true";
@@ -78,6 +92,10 @@ export async function updateProduct(id: string, formData: FormData) {
         name,
         slug,
         category,
+        speciesId,
+        benefits,
+        productType,
+        badges,
         shortDescription,
         description,
         price,

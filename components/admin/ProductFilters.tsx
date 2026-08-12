@@ -4,7 +4,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback, useState } from "react";
 import { Search } from "lucide-react";
 
-export function ProductFilters() {
+export function ProductFilters({ speciesOptions = [] }: { speciesOptions?: { id: string; name: string; slug: string }[] }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -30,8 +30,8 @@ export function ProductFilters() {
     router.push(`${pathname}?${createQueryString("q", search)}`);
   };
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    router.push(`${pathname}?${createQueryString("category", e.target.value)}`);
+  const handleSpeciesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    router.push(`${pathname}?${createQueryString("species", e.target.value)}`);
   };
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -55,18 +55,14 @@ export function ProductFilters() {
       
       <div className="flex flex-row gap-4">
         <select
-          value={searchParams.get("category") || ""}
-          onChange={handleCategoryChange}
+          value={searchParams.get("species") || ""}
+          onChange={handleSpeciesChange}
           className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white sm:w-40"
         >
-          <option value="">All Categories</option>
-          <option value="Dairy">Dairy</option>
-          <option value="Poultry">Poultry</option>
-          <option value="Small Ruminants">Small Ruminants</option>
-          <option value="Aqua">Aqua</option>
-          <option value="Swine">Swine</option>
-          <option value="Equine">Equine</option>
-          <option value="Pet">Pet</option>
+          <option value="">All Species</option>
+          {speciesOptions.map(spec => (
+            <option key={spec.id} value={spec.slug}>{spec.name}</option>
+          ))}
         </select>
         
         <select

@@ -1,15 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 import { Package, Users, MessageSquare, Activity } from "lucide-react";
+import UserManagement from "@/components/admin/UserManagement";
 
 const prisma = new PrismaClient();
 
 export default async function AdminDashboardPage() {
-  const [productCount, distributorCount, inquiryCount, recentInquiries] = await Promise.all([
+  const [productCount, distributorCount, inquiryCount, recentInquiries, allUsers] = await Promise.all([
     prisma.product.count(),
     prisma.user.count({ where: { role: "DISTRIBUTOR" } }),
     prisma.inquiry.count(),
     prisma.inquiry.findMany({
       take: 5,
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.user.findMany({
       orderBy: { createdAt: "desc" },
     }),
   ]);
@@ -98,6 +102,8 @@ export default async function AdminDashboardPage() {
           )}
         </div>
       </div>
+
+      <UserManagement initialUsers={allUsers} />
     </div>
   );
 }

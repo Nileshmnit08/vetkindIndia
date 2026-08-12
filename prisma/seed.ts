@@ -43,6 +43,33 @@ async function main() {
     },
   });
 
+  // Seed Species
+  const dairySpecies = await prisma.species.upsert({
+    where: { slug: "Dairy" },
+    update: {},
+    create: {
+      name: "Dairy",
+      slug: "Dairy",
+      image: "https://images.unsplash.com/photo-1596733430284-f7437275218d?q=80&w=400&auto=format&fit=crop",
+      featured: true,
+      isActive: true,
+      sortOrder: 1,
+    }
+  });
+
+  const poultrySpecies = await prisma.species.upsert({
+    where: { slug: "Poultry" },
+    update: {},
+    create: {
+      name: "Poultry",
+      slug: "Poultry",
+      image: "https://images.unsplash.com/photo-1516467508483-a7212febe31a?q=80&w=400&auto=format&fit=crop",
+      featured: true,
+      isActive: true,
+      sortOrder: 2,
+    }
+  });
+
   // Dummy Product
   await prisma.product.upsert({
     where: { slug: "vetkind-pro-milk" },
@@ -51,6 +78,7 @@ async function main() {
       name: "VetKind Pro Milk",
       slug: "vetkind-pro-milk",
       category: "Dairy Nutrition",
+      speciesId: dairySpecies.id,
       description: "Premium phytogenic supplement to boost milk yield.",
       price: 1500,
       published: true,

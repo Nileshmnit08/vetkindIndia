@@ -19,15 +19,24 @@ import {
   Zap,
   CheckCircle2,
 } from "lucide-react";
-import { articles } from "@/lib/data";
 import { getProducts } from "@/lib/products";
+import { getSolutions } from "@/app/actions/solutions";
+import { getKnowledgeArticles } from "@/app/actions/knowledge";
 import { ProductCard } from "@/components/products/ProductCard";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
+
 
 export default async function Home() {
   const [{ data: bestSellingProducts }, { data: featuredProducts }] = await Promise.all([
     getProducts({ sortBy: 'popular', limit: 4 }),
     getProducts({ sortBy: 'featured', limit: 3 })
   ]);
+  
+  const solutionsResponse = await getSolutions(undefined, "PUBLISHED");
+  const solutions = solutionsResponse.success ? solutionsResponse.data || [] : [];
+  
+  const articlesResponse = await getKnowledgeArticles(undefined, undefined, "PUBLISHED");
+  const articles = articlesResponse.success ? articlesResponse.data || [] : [];
   return (
     <div className="flex min-h-screen flex-col font-sans">
 
@@ -173,23 +182,14 @@ export default async function Home() {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {[
-                { title: "Milk Production", slug: "milk-production", icon: Droplet },
-                { title: "Fertility", slug: "fertility", icon: Heart },
-                { title: "Mastitis & Udder", slug: "mastitis-udder-health", icon: ShieldCheck },
-                { title: "Rumen Health", slug: "rumen-health", icon: Activity },
-                { title: "Liver & Metabolism", slug: "liver-metabolism", icon: Zap },
-                { title: "Immunity", slug: "immunity", icon: ShieldCheck },
-                { title: "Heat Stress", slug: "heat-stress", icon: Thermometer },
-                { title: "Mineral Nutrition", slug: "mineral-nutrition", icon: Wheat },
-              ].map((solution, index) => (
+              {solutions.filter(s => s.featured).slice(0, 8).map((solution) => (
                 <Link
-                  key={index}
+                  key={solution.id}
                   href={`/solutions/${solution.slug}`}
                   className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 transition-all hover:border-green-500 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
                 >
                   <div className="mb-4 inline-flex rounded-lg bg-green-50 p-3 text-green-600 dark:bg-green-900/20 dark:text-green-400">
-                    <solution.icon className="h-6 w-6" />
+                    <DynamicIcon name={solution.iconName} className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-semibold text-zinc-900 group-hover:text-green-600 dark:text-zinc-100 dark:group-hover:text-green-400 transition-colors">
                     {solution.title}
@@ -311,21 +311,29 @@ export default async function Home() {
               </Link>
             </div>
             <div className="grid gap-8 md:grid-cols-3">
-              {articles.map((article) => (
+              {articles.slice(0, 3).map((article) => (
                 <Link key={article.id} href={`/knowledge/${article.slug}`} className="group flex flex-col">
                   <div className="relative mb-4 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800">
-                    <div className="absolute inset-0 bg-green-900/10 transition-colors group-hover:bg-transparent"></div>
-                    {/* Placeholder for article image */}
-                    <div className="flex h-full w-full items-center justify-center text-zinc-400">
-                      <BookOpenIcon />
-                    </div>
+                    <div className="absolute inset-0 bg-green-900/10 transition-colors group-hover:bg-transparent z-10"></div>
+                    {article.coverImage ? (
+                      <Image 
+                        src={article.coverImage} 
+                        alt={article.title} 
+                        fill 
+                        className="object-cover transition-transform duration-500 group-hover:scale-105" 
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-zinc-400">
+                        <BookOpenIcon />
+                      </div>
+                    )}
                   </div>
                   <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 mb-2">
-                    <span className="font-semibold text-green-600 dark:text-green-400">{article.category}</span>
-                    <span>•</span>
-                    <span>{article.date}</span>
-                    <span>•</span>
-                    <span>{article.readTime}</span>
+                    {article.category && <span className="font-semibold text-green-600 dark:text-green-400">{article.category}</span>}
+                    {article.category && <span>•</span>}
+                    <span>{article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    {article.readTime && <span>•</span>}
+                    {article.readTime && <span>{article.readTime}</span>}
                   </div>
                   <h3 className="text-xl font-bold text-zinc-900 group-hover:text-green-600 dark:text-zinc-100 dark:group-hover:text-green-400 transition-colors">
                     {article.title}

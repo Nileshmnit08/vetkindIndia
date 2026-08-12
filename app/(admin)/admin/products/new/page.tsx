@@ -1,8 +1,10 @@
 import { ProductForm } from "@/components/admin/ProductForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { getSpeciesList } from "@/app/actions/species";
 
-export default function NewProductPage() {
+export default async function NewProductPage() {
+  const speciesList = await getSpeciesList();
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
@@ -22,7 +24,7 @@ export default function NewProductPage() {
       </div>
 
       <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <ProductForm />
+        <ProductForm speciesOptions={speciesList} />
       </div>
     </div>
   );
