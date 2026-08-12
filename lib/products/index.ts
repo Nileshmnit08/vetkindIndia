@@ -105,11 +105,13 @@ export async function getProductBySlug(slug: string): Promise<ProductWithRelatio
 
 export async function getFilterOptions() {
   // Fetch active species
-  const species = await prisma.species.findMany({
+  const rawSpecies = await prisma.species.findMany({
     where: { isActive: true },
     orderBy: { sortOrder: 'asc' },
     select: { id: true, name: true, slug: true, image: true, featured: true }
   });
+
+  const species = rawSpecies.filter(s => !s.name.toLowerCase().includes('test'));
 
   // To gracefully handle empty options, we'll fetch distinct values 
   // for category, benefits, productType from *published* products.
