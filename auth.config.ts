@@ -15,11 +15,15 @@ export const authConfig = {
       const isOnOldDashboard = nextUrl.pathname === '/dashboard';
 
       if (isOnAdmin) {
-        return true; // TEMPORARILY BYPASS AUTH
+        if (!isLoggedIn) return false;
+        if (role !== 'ADMIN') return Response.redirect(new URL('/dashboard', nextUrl));
+        return true;
       }
 
       if (isOnDistributor) {
-        return true; // TEMPORARILY BYPASS AUTH
+        if (!isLoggedIn) return false;
+        if (role !== 'DISTRIBUTOR' && role !== 'ADMIN') return Response.redirect(new URL('/dashboard', nextUrl));
+        return true;
       }
       
       if (isOnOldDashboard) {

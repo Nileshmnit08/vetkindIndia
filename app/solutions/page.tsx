@@ -25,7 +25,7 @@ export default async function SolutionsPage({
   
   if (resolvedParams.search) {
     const q = resolvedParams.search.toLowerCase();
-    filteredSolutions = filteredSolutions.filter(s => 
+    filteredSolutions = filteredSolutions.filter((s: any) => 
       s.title.toLowerCase().includes(q) || 
       (s.shortSummary && s.shortSummary.toLowerCase().includes(q))
     );
@@ -83,7 +83,7 @@ export default async function SolutionsPage({
               </div>
             ) : (
               <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-                {filteredSolutions.map((solution) => {
+                {filteredSolutions.map((solution: any) => {
                   return (
                     <Link 
                       key={solution.id} 

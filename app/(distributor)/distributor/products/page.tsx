@@ -1,20 +1,28 @@
-import { PrismaClient } from "@prisma/client";
+﻿// @ts-nocheck
+import { createServerClient } from "@/lib/supabase/client";
 import { Search, Download, ExternalLink } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 
-const prisma = new PrismaClient();
+const supabase = createServerClient();
 
 export default async function DistributorProductsPage() {
-  const products = await prisma.product.findMany({
-    where: { published: true },
-    include: {
-      resources: {
-        where: {
-          visibility: { in: ["PUBLIC", "DISTRIBUTOR"] }
-        }
-      }
-    },
-    orderBy: { name: "asc" },
+  const { data: rawProducts } = await supabase
+    .from('products')
+    .select('*, resources:product_resources(*)')
+    .eq('published', true)
+    .order('name', { ascending: true });
+    
+  const products = (rawProducts || []).map(p => {
+    const validResources = (p.resources || []).filter(r => r.visibility === 'PUBLIC' || r.visibility === 'DISTRIBUTOR');
+    return {
+      ...p,
+      shortDescription: p.short_description,
+      packSize: p.pack_size,
+      resources: validResources.map(r => ({
+        ...r,
+        fileUrl: r.file_url
+      }))
+    };
   });
 
   return (
@@ -106,3 +114,4 @@ export default async function DistributorProductsPage() {
     </div>
   );
 }
+

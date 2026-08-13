@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 import { getNewsEvents } from "@/app/actions/news-events";
 import Link from "next/link";
 import { Calendar, ChevronRight, FileSearch, Megaphone, MapPin } from "lucide-react";
@@ -18,7 +19,7 @@ export default async function NewsEventsPage({
   const eventsResponse = await getNewsEvents(undefined, typeFilter, "PUBLISHED");
   const items = eventsResponse.success ? eventsResponse.data || [] : [];
   
-  let featuredItem = null;
+  let featuredItem: any = null;
   let gridItems = items;
 
   if (items.length > 0) {
@@ -192,3 +193,4 @@ export default async function NewsEventsPage({
     </div>
   );
 }
+

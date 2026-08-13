@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 import { createSpecies, updateSpecies, deleteSpecies } from "@/app/actions/species";
 import { Save, Trash2, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { Species } from "@prisma/client";
 
-export function SpeciesForm({ initialData }: { initialData?: Species | null }) {
+export function SpeciesForm({ initialData }: { initialData?: any | null }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);

@@ -37,7 +37,7 @@ export default async function ProductsPage({
     getFilterOptions()
   ]);
 
-  const isValidSpecies = options.species ? filterOptions.species.some(s => s.slug === options.species) : true;
+  const isValidSpecies = options.species ? filterOptions.species.some((s: any) => s.slug === options.species) : true;
 
   return (
     <div className="flex min-h-screen flex-col font-sans bg-zinc-50 dark:bg-zinc-950">

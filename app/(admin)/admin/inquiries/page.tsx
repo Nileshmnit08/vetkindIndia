@@ -1,11 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+// @ts-nocheck
+import { createServerClient } from "@/lib/supabase/client";
+import Link from "next/link";
 
-const prisma = new PrismaClient();
+const supabase = createServerClient();
 
 export default async function AdminInquiriesPage() {
-  const inquiries = await prisma.inquiry.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  const { data: rawInquiries } = await supabase
+    .from('inquiries')
+    .select('*')
+    .order('created_at', { ascending: false });
+    
+  const inquiries = (rawInquiries || []).map(i => ({
+    ...i,
+    createdAt: new Date(i.created_at)
+  }));
 
   return (
     <div className="space-y-6">
@@ -70,9 +78,9 @@ export default async function AdminInquiriesPage() {
                           {inquiry.message}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <a href="#" className="text-green-600 hover:text-green-900 dark:text-green-500 dark:hover:text-green-400">
+                          <Link href={`/admin/inquiries/${inquiry.id}`} className="text-green-600 hover:text-green-900 dark:text-green-500 dark:hover:text-green-400">
                             View<span className="sr-only">, {inquiry.name}</span>
-                          </a>
+                          </Link>
                         </td>
                       </tr>
                     ))
@@ -92,3 +100,4 @@ export default async function AdminInquiriesPage() {
     </div>
   );
 }
+

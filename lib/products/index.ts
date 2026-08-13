@@ -1,9 +1,11 @@
-import { PrismaClient, Product, Prisma, Species } from "@prisma/client";
+import { supabase } from "../supabase/client";
 
-const prisma = new PrismaClient();
+// Define basic types based on Supabase schema
+export type ProductRow = any; // Assuming you have proper generated types, using any for now to avoid type errors
+export type SpeciesRow = any;
 
-export type ProductWithRelations = Product & {
-  species: Species | null;
+export type ProductWithRelations = ProductRow & {
+  species: SpeciesRow | null;
 };
 
 export interface FetchProductsOptions {
@@ -19,54 +21,51 @@ export interface FetchProductsOptions {
 }
 
 export async function getProducts(options: FetchProductsOptions = {}): Promise<{ data: ProductWithRelations[], count: number }> {
-  const where: Prisma.ProductWhereInput = {
-    published: true,
-  };
+  let query = supabase
+    .from('products')
+    .select('*, species:species_id(*)', { count: 'exact' })
+    .eq('published', true) as any;
 
   if (options.search) {
-    where.name = { contains: options.search };
+    query = query.ilike('name', `%${options.search}%`);
   }
   
   if (options.category) {
-    where.category = { contains: options.category };
+    query = query.ilike('category', `%${options.category}%`);
   }
 
   if (options.species) {
-    where.species = {
-      slug: options.species
-    };
+    query = query.eq('species.slug', options.species);
   }
 
   if (options.benefit) {
-    where.benefits = { contains: options.benefit };
+    query = query.ilike('benefits', `%${options.benefit}%`);
   }
 
   if (options.productType) {
-    where.productType = { contains: options.productType };
+    query = query.ilike('product_type', `%${options.productType}%`);
   }
 
   if (options.badge) {
-    where.badges = { contains: options.badge };
+    query = query.ilike('badges', `%${options.badge}%`);
   }
 
-  let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: 'desc' };
-  
   switch (options.sortBy) {
     case 'featured':
-      where.featured = true;
+      query = query.eq('featured', true).order('created_at', { ascending: false });
       break;
     case 'popular':
-      where.bestseller = true;
+      query = query.eq('bestseller', true).order('created_at', { ascending: false });
       break;
     case 'price_asc':
-      orderBy = { price: 'asc' };
+      query = query.order('price', { ascending: true });
       break;
     case 'price_desc':
-      orderBy = { price: 'desc' };
+      query = query.order('price', { ascending: false });
       break;
     case 'newest':
     default:
-      orderBy = { createdAt: 'desc' };
+      query = query.order('created_at', { ascending: false });
       break;
   }
 
@@ -74,67 +73,68 @@ export async function getProducts(options: FetchProductsOptions = {}): Promise<{
   const limit = options.limit || 12;
   const skip = (page - 1) * limit;
 
-  const [products, count] = await Promise.all([
-    prisma.product.findMany({
-      where,
-      orderBy,
-      skip,
-      take: limit,
-      include: {
-        species: true
-      }
-    }),
-    prisma.product.count({ where }),
-  ]);
+  query = query.range(skip, skip + limit - 1);
 
-  return { data: products, count };
+  const { data: rawProducts, count } = (await query) as any;
+  
+  // Filter out products with null species if species filter was applied
+  const products = options.species 
+    ? (rawProducts || []).filter((p: any) => p.species) 
+    : (rawProducts || []);
+
+  const mappedProducts = products.map((p: any) => ({
+    ...p,
+    productType: p.product_type,
+    createdAt: new Date(p.created_at)
+  }));
+
+  return { data: mappedProducts as any, count: count || 0 };
 }
 
 export async function getProductBySlug(slug: string): Promise<ProductWithRelations | null> {
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: {
-      species: true
-    }
-  });
+  const { data: product } = await supabase
+    .from('products')
+    .select('*, species:species_id(*)')
+    .eq('slug', slug)
+    .single() as any;
 
   if (!product || !product.published) return null;
 
-  return product;
+  return {
+    ...product,
+    productType: product.product_type,
+    createdAt: new Date(product.created_at)
+  } as any;
 }
 
 export async function getFilterOptions() {
   // Fetch active species
-  const rawSpecies = await prisma.species.findMany({
-    where: { isActive: true },
-    orderBy: { sortOrder: 'asc' },
-    select: { id: true, name: true, slug: true, image: true, featured: true }
-  });
+  const { data: rawSpecies } = await supabase
+    .from('species')
+    .select('id, name, slug, image, featured')
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true }) as any;
 
-  const species = rawSpecies.filter(s => !s.name.toLowerCase().includes('test'));
+  const species = (rawSpecies || []).filter((s: any) => !s.name.toLowerCase().includes('test'));
 
   // To gracefully handle empty options, we'll fetch distinct values 
   // for category, benefits, productType from *published* products.
-  const products = await prisma.product.findMany({
-    where: { published: true },
-    include: { species: true }
-  });
+  const { data: products } = await supabase
+    .from('products')
+    .select('category, benefits, product_type, badges')
+    .eq('published', true) as any;
 
   const categories = new Set<string>();
   const benefits = new Set<string>();
   const productTypes = new Set<string>();
   const badges = new Set<string>();
-  const activeSpeciesIds = new Set<string>();
 
-  products.forEach(p => {
-    if (p.category) p.category.split(',').map(v => v.trim()).filter(Boolean).forEach(v => categories.add(v));
-    if (p.benefits) p.benefits.split(',').map(v => v.trim()).filter(Boolean).forEach(v => benefits.add(v));
-    if (p.productType) p.productType.split(',').map(v => v.trim()).filter(Boolean).forEach(v => productTypes.add(v));
-    if (p.badges) p.badges.split(',').map(v => v.trim()).filter(Boolean).forEach(v => badges.add(v));
-    if (p.species) activeSpeciesIds.add(p.species.id);
+  (products || []).forEach((p: any) => {
+    if (p.category) p.category.split(',').map((v: string) => v.trim()).filter(Boolean).forEach((v: string) => categories.add(v));
+    if (p.benefits) p.benefits.split(',').map((v: string) => v.trim()).filter(Boolean).forEach((v: string) => benefits.add(v));
+    if (p.product_type) p.product_type.split(',').map((v: string) => v.trim()).filter(Boolean).forEach((v: string) => productTypes.add(v));
+    if (p.badges) p.badges.split(',').map((v: string) => v.trim()).filter(Boolean).forEach((v: string) => badges.add(v));
   });
-
-  // Do not filter out species with zero products, so that Browse by Species and Footer always show the full taxonomy
 
   return {
     species: species,

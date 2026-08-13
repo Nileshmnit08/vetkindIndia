@@ -4,16 +4,16 @@ import { ProductWithRelations } from "../products";
 
 const isDummySupabase = process.env.NEXT_PUBLIC_SUPABASE_URL?.includes('xyzcompany');
 
-export type ArticleRow = Database['public']['Tables']['articles']['Row'];
-export type CategoryRow = Database['public']['Tables']['article_categories']['Row'];
-export type AuthorRow = Database['public']['Tables']['authors']['Row'];
-export type TagRow = Database['public']['Tables']['article_tags']['Row'];
+export type ArticleRow = any;
+export type CategoryRow = any;
+export type AuthorRow = any;
+export type TagRow = any;
 
 export interface ArticleWithRelations extends ArticleRow {
-  category: CategoryRow | null;
-  author: AuthorRow | null;
-  tags: TagRow[];
-  products: ProductWithRelations[];
+  category?: CategoryRow | null;
+  author?: AuthorRow | null;
+  tags?: TagRow[];
+  products?: ProductWithRelations[];
 }
 
 export async function getArticles(categorySlug?: string): Promise<ArticleWithRelations[]> {
@@ -86,9 +86,7 @@ export async function getArticleBySlug(slug: string): Promise<ArticleWithRelatio
   if (isDummySupabase) {
     const article = MOCK_ARTICLES.find(a => a.slug === slug) || null;
     if (article) {
-      const { PrismaClient } = await import('@prisma/client');
-      const prisma = new PrismaClient();
-      const products = await prisma.product.findMany({ where: { published: true }, take: 2 });
+      const { data: products } = await supabase.from('products').select('*').eq('published', true).limit(2);
       article.products = products as unknown as ProductWithRelations[];
     }
     return article;

@@ -15,6 +15,13 @@ import {
   FileText
 } from "lucide-react";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin Portal | VetKind",
+  description: "VetKind Administration Portal",
+};
+
 export default async function AdminLayout({
   children,
 }: {

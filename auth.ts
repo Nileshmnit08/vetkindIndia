@@ -1,10 +1,10 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
-import { PrismaClient } from '@prisma/client';
+import { createServerClient } from './lib/supabase/client';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
+const supabase = createServerClient();
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
@@ -20,12 +20,18 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
           return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email.toLowerCase() },
-        });
+        const { data: user, error } = (await supabase
+          .from('users')
+          .select('*')
+          .eq('email', credentials.email.toLowerCase())
+          .single()) as { data: any, error: any };
 
-        if (!user || !user.password) {
+        if (error || !user || !user.password) {
           return null;
+        }
+
+        if (user.status !== 'ACTIVE') {
+          return null; // Reject login for inactive users
         }
 
         const passwordsMatch = await bcrypt.compare(credentials.password, user.password);

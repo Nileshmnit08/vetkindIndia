@@ -4,14 +4,14 @@ import { ProductWithRelations } from "../products";
 
 const isDummySupabase = process.env.NEXT_PUBLIC_SUPABASE_URL?.includes('xyzcompany');
 
-export type SolutionRow = Database['public']['Tables']['solutions']['Row'];
-export type SolutionFaqRow = Database['public']['Tables']['solution_faqs']['Row'];
-export type ArticleRow = Database['public']['Tables']['articles']['Row'];
+export type SolutionRow = any;
+export type SolutionFaqRow = any;
+export type ArticleRow = any;
 
 export interface SolutionWithRelations extends SolutionRow {
-  faqs: SolutionFaqRow[];
-  articles: ArticleRow[];
-  products: ProductWithRelations[];
+  faqs?: SolutionFaqRow[];
+  articles?: ArticleRow[];
+  products?: ProductWithRelations[];
 }
 
 export async function getSolutions(): Promise<SolutionWithRelations[]> {
@@ -66,10 +66,8 @@ export async function getSolutionBySlug(slug: string): Promise<SolutionWithRelat
   if (isDummySupabase) {
     const solution = MOCK_SOLUTIONS.find(s => s.slug === slug) || null;
     if (solution) {
-      // Fetch some products from Prisma dynamically to prevent MOCK_PRODUCTS dependency
-      const { PrismaClient } = await import('@prisma/client');
-      const prisma = new PrismaClient();
-      const products = await prisma.product.findMany({ where: { published: true }, take: 3 });
+      // Fetch some products from Supabase dynamically to prevent MOCK_PRODUCTS dependency
+      const { data: products } = await supabase.from('products').select('*').eq('published', true).limit(3);
       solution.products = products as unknown as ProductWithRelations[];
     }
     return solution;

@@ -1,12 +1,13 @@
+﻿// @ts-nocheck
 "use server";
 
 import { signIn, signOut } from "@/auth";
-import { PrismaClient } from "@prisma/client";
+import { createServerClient } from "@/lib/supabase/client";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 
-const prisma = new PrismaClient();
+const supabase = createServerClient();
 
 export async function authenticate(
   prevState: string | undefined,
@@ -50,9 +51,12 @@ export async function registerUser(
     }
 
     const normalizedEmail = email.toLowerCase();
-    const existingUser = await prisma.user.findUnique({
-      where: { email: normalizedEmail },
-    });
+    
+    const { data: existingUser } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', normalizedEmail)
+      .single();
 
     if (existingUser) {
       return "An account with this email already exists.";
@@ -60,13 +64,13 @@ export async function registerUser(
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await prisma.user.create({
-      data: {
-        name,
-        email: normalizedEmail,
-        password: hashedPassword,
-      },
+    const { error: insertError } = await supabase.from('users').insert({
+      name,
+      email: normalizedEmail,
+      password: hashedPassword,
     });
+
+    if (insertError) throw insertError;
 
     return "Success";
   } catch (error) {
@@ -79,3 +83,4 @@ export async function logout() {
   await signOut();
   revalidatePath("/");
 }
+

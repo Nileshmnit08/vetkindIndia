@@ -10,6 +10,13 @@ import {
   FlaskConical
 } from "lucide-react";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Distributor Portal | VetKind",
+  description: "VetKind Distributor Portal",
+};
+
 export default async function DistributorLayout({
   children,
 }: {

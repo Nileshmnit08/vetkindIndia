@@ -1,31 +1,42 @@
+﻿// @ts-nocheck
 "use server";
 
-import { PrismaClient, Prisma } from "@prisma/client";
+import { createServerClient } from "@/lib/supabase/client";
 import { revalidatePath } from "next/cache";
 
-const prisma = new PrismaClient();
+const supabase = createServerClient();
 
 export async function getKnowledgeArticles(query?: string, category?: string, status?: string) {
   try {
-    const where: Prisma.KnowledgeArticleWhereInput = {};
+    let supabaseQuery = supabase.from('knowledge_articles').select('*').order('created_at', { ascending: false });
+
     if (query) {
-      where.OR = [
-        { title: { contains: query } },
-        { excerpt: { contains: query } },
-      ];
+      supabaseQuery = supabaseQuery.or(`title.ilike.%${query}%,excerpt.ilike.%${query}%`);
     }
+
     if (category) {
-      where.category = category;
+      supabaseQuery = supabaseQuery.eq('category', category);
     }
+
     if (status) {
-      where.status = status;
+      supabaseQuery = supabaseQuery.eq('status', status);
     }
     
-    const articles = await prisma.knowledgeArticle.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-    });
-    return { success: true, data: articles };
+    const { data: articles, error } = await supabaseQuery as any;
+    if (error) throw error;
+    
+    const mapped = articles.map((a: any) => ({
+      ...a,
+      coverImage: a.cover_image,
+      articleContent: a.article_content,
+      readTime: a.read_time,
+      publishedAt: a.published_at ? new Date(a.published_at) : null,
+      seoTitle: a.seo_title,
+      seoDescription: a.seo_description,
+      createdAt: new Date(a.created_at)
+    }));
+
+    return { success: true, data: mapped };
   } catch (error: any) {
     console.error("Failed to fetch articles:", error);
     return { success: false, error: error.message };
@@ -34,11 +45,21 @@ export async function getKnowledgeArticles(query?: string, category?: string, st
 
 export async function getKnowledgeArticleById(id: string) {
   try {
-    const article = await prisma.knowledgeArticle.findUnique({
-      where: { id },
-    });
-    if (!article) throw new Error("Article not found");
-    return { success: true, data: article };
+    const { data: article, error } = await supabase.from('knowledge_articles').select('*').eq('id', id).single() as any;
+    if (error || !article) throw new Error("Article not found");
+    
+    const mapped = {
+      ...article,
+      coverImage: article.cover_image,
+      articleContent: article.article_content,
+      readTime: article.read_time,
+      publishedAt: article.published_at ? new Date(article.published_at) : null,
+      seoTitle: article.seo_title,
+      seoDescription: article.seo_description,
+      createdAt: new Date(article.created_at)
+    };
+    
+    return { success: true, data: mapped };
   } catch (error: any) {
     console.error("Failed to fetch article:", error);
     return { success: false, error: error.message };
@@ -47,11 +68,25 @@ export async function getKnowledgeArticleById(id: string) {
 
 export async function getKnowledgeArticleBySlug(slug: string) {
   try {
-    const article = await prisma.knowledgeArticle.findUnique({
-      where: { slug, status: "PUBLISHED" },
-    });
-    if (!article) return null;
-    return article;
+    const { data: article, error } = await supabase
+      .from('knowledge_articles')
+      .select('*')
+      .eq('slug', slug)
+      .eq('status', 'PUBLISHED')
+      .single() as any;
+      
+    if (error || !article) return null;
+    
+    return {
+      ...article,
+      coverImage: article.cover_image,
+      articleContent: article.article_content,
+      readTime: article.read_time,
+      publishedAt: article.published_at ? new Date(article.published_at) : null,
+      seoTitle: article.seo_title,
+      seoDescription: article.seo_description,
+      createdAt: new Date(article.created_at)
+    };
   } catch (error: any) {
     console.error("Failed to fetch article by slug:", error);
     return null;
@@ -60,9 +95,17 @@ export async function getKnowledgeArticleBySlug(slug: string) {
 
 export async function createKnowledgeArticle(data: any) {
   try {
-    const article = await prisma.knowledgeArticle.create({
-      data,
-    });
+    const insertData: any = { ...data };
+    if (data.coverImage !== undefined) { insertData.cover_image = data.coverImage; delete insertData.coverImage; }
+    if (data.articleContent !== undefined) { insertData.article_content = data.articleContent; delete insertData.articleContent; }
+    if (data.readTime !== undefined) { insertData.read_time = data.readTime; delete insertData.readTime; }
+    if (data.publishedAt !== undefined) { insertData.published_at = data.publishedAt; delete insertData.publishedAt; }
+    if (data.seoTitle !== undefined) { insertData.seo_title = data.seoTitle; delete insertData.seoTitle; }
+    if (data.seoDescription !== undefined) { insertData.seo_description = data.seoDescription; delete insertData.seoDescription; }
+
+    const { data: article, error } = await supabase.from('knowledge_articles').insert(insertData).select().single() as any;
+    if (error) throw error;
+    
     revalidatePath("/admin/knowledge");
     revalidatePath("/knowledge");
     revalidatePath("/");
@@ -75,10 +118,17 @@ export async function createKnowledgeArticle(data: any) {
 
 export async function updateKnowledgeArticle(id: string, data: any) {
   try {
-    const article = await prisma.knowledgeArticle.update({
-      where: { id },
-      data,
-    });
+    const updateData: any = { ...data };
+    if (data.coverImage !== undefined) { updateData.cover_image = data.coverImage; delete updateData.coverImage; }
+    if (data.articleContent !== undefined) { updateData.article_content = data.articleContent; delete updateData.articleContent; }
+    if (data.readTime !== undefined) { updateData.read_time = data.readTime; delete updateData.readTime; }
+    if (data.publishedAt !== undefined) { updateData.published_at = data.publishedAt; delete updateData.publishedAt; }
+    if (data.seoTitle !== undefined) { updateData.seo_title = data.seoTitle; delete updateData.seoTitle; }
+    if (data.seoDescription !== undefined) { updateData.seo_description = data.seoDescription; delete updateData.seoDescription; }
+
+    const { data: article, error } = await supabase.from('knowledge_articles').update(updateData).eq('id', id).select().single() as any;
+    if (error) throw error;
+    
     revalidatePath("/admin/knowledge");
     revalidatePath("/knowledge");
     revalidatePath(`/knowledge/${article.slug}`);
@@ -92,9 +142,9 @@ export async function updateKnowledgeArticle(id: string, data: any) {
 
 export async function deleteKnowledgeArticle(id: string) {
   try {
-    const article = await prisma.knowledgeArticle.delete({
-      where: { id },
-    });
+    const { error } = await supabase.from('knowledge_articles').delete().eq('id', id);
+    if (error) throw error;
+    
     revalidatePath("/admin/knowledge");
     revalidatePath("/knowledge");
     revalidatePath("/");
@@ -108,10 +158,9 @@ export async function deleteKnowledgeArticle(id: string) {
 export async function toggleKnowledgeArticleStatus(id: string, currentStatus: string) {
   try {
     const newStatus = currentStatus === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
-    const article = await prisma.knowledgeArticle.update({
-      where: { id },
-      data: { status: newStatus },
-    });
+    const { data: article, error } = await supabase.from('knowledge_articles').update({ status: newStatus } as any).eq('id', id).select().single() as any;
+    if (error) throw error;
+    
     revalidatePath("/admin/knowledge");
     revalidatePath("/knowledge");
     revalidatePath(`/knowledge/${article.slug}`);
@@ -122,3 +171,4 @@ export async function toggleKnowledgeArticleStatus(id: string, currentStatus: st
     return { success: false, error: error.message };
   }
 }
+

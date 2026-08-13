@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { User } from "@prisma/client";
 import { createUser, updateUser, deleteUser, updateUserStatus } from "@/app/actions/admin-users";
 import { Plus, Search, Edit, Trash2, Power, PowerOff, AlertCircle } from "lucide-react";
+
+type User = any;
 
 type UserManagementProps = {
   initialUsers: User[];

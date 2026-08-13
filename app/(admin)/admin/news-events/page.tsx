@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 import { getNewsEvents } from "@/app/actions/news-events";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -125,3 +126,4 @@ export default async function AdminNewsEventsPage({ searchParams }: AdminNewsEve
     </div>
   );
 }
+

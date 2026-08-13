@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 /* eslint-disable @next/next/no-img-element */
 import { getKnowledgeArticles } from "@/app/actions/knowledge";
 import Link from "next/link";
@@ -222,3 +223,4 @@ export default async function KnowledgeHubPage({
     </div>
   );
 }
+

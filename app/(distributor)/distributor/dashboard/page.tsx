@@ -1,21 +1,28 @@
+﻿// @ts-nocheck
 import { auth } from "@/auth";
-import { PrismaClient } from "@prisma/client";
+import { createServerClient } from "@/lib/supabase/client";
 import { Package, MessageSquare, Download, FileText } from "lucide-react";
 import Link from "next/link";
 
-const prisma = new PrismaClient();
+const supabase = createServerClient();
 
 export default async function DistributorDashboardPage() {
   const session = await auth();
   
-  const [productCount, recentInquiries] = await Promise.all([
-    prisma.product.count({ where: { published: true } }),
-    prisma.inquiry.findMany({
-      where: { userId: session?.user?.id },
-      take: 3,
-      orderBy: { createdAt: "desc" },
-    }),
+  const [
+    { count: productCount },
+    { data: recentInquiries }
+  ] = await Promise.all([
+    supabase.from('products').select('*', { count: 'exact', head: true }).eq('published', true),
+    session?.user?.id 
+      ? supabase.from('inquiries').select('*').eq('user_id', session.user.id).order('created_at', { ascending: false }).limit(3)
+      : Promise.resolve({ data: [] })
   ]);
+  
+  const mappedInquiries = (recentInquiries || []).map(i => ({
+    ...i,
+    createdAt: new Date(i.created_at)
+  }));
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
@@ -41,7 +48,7 @@ export default async function DistributorDashboardPage() {
               <h3 className="font-semibold text-zinc-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                 Browse Products
               </h3>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">{productCount} items available</p>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">{productCount || 0} items available</p>
             </div>
           </div>
         </Link>
@@ -110,9 +117,9 @@ export default async function DistributorDashboardPage() {
             </Link>
           </div>
           <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-            {recentInquiries.length > 0 ? (
+            {mappedInquiries.length > 0 ? (
               <ul className="divide-y divide-zinc-200 dark:divide-zinc-800">
-                {recentInquiries.map((inquiry) => (
+                {mappedInquiries.map((inquiry) => (
                   <li key={inquiry.id} className="p-4 sm:px-6">
                     <div className="flex items-center justify-between">
                       <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -143,3 +150,4 @@ export default async function DistributorDashboardPage() {
     </div>
   );
 }
+

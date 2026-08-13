@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<meta name="ProgId" content="Word.Document">
+<meta name="Generator" content="Microsoft Word 15">
+<meta name="Originator" content="Microsoft Word 15">
+<!--[if gte mso 9]>
+<xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+<w:DoNotOptimizeForBrowser/>
+</w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+  @page {
+    size: A4;
+    margin: 2.54cm;
+  }
+  body {
+    font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 26pt;
+    color: #1b5e20;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 8pt;
+    border-bottom: 3pt solid #2e7d32;
+    padding-bottom: 12pt;
+  }
+  h2 {
+    font-size: 18pt;
+    color: #2e7d32;
+    font-weight: bold;
+    margin-top: 28pt;
+    margin-bottom: 10pt;
+    border-bottom: 1.5pt solid #c8e6c9;
+    padding-bottom: 6pt;
+  }
+  h3 {
+    font-size: 14pt;
+    color: #1b5e20;
+    font-weight: bold;
+    margin-top: 18pt;
+    margin-bottom: 8pt;
+  }
+  h4 {
+    font-size: 12pt;
+    color: #333;
+    font-weight: bold;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+  }
+  p {
+    margin-bottom: 8pt;
+    text-align: justify;
+  }
+  .cover-page {
+    text-align: center;
+    padding-top: 120pt;
+    page-break-after: always;
+  }
+  .cover-page h1 {
+    font-size: 36pt;
+    color: #1b5e20;
+    border-bottom: none;
+    margin-bottom: 4pt;
+  }
+  .cover-page .subtitle {
+    font-size: 18pt;
+    color: #555;
+    margin-bottom: 40pt;
+  }
+  .cover-page .meta {
+    font-size: 12pt;
+    color: #777;
+    margin-bottom: 6pt;
+  }
+  .cover-page .company {
+    font-size: 14pt;
+    color: #2e7d32;
+    font-weight: bold;
+    margin-top: 40pt;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 14pt;
+    font-size: 10pt;
+  }
+  table, th, td {
+    border: 1pt solid #c0c0c0;
+  }
+  th {
+    background-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    padding: 6pt 10pt;
+    text-align: left;
+  }
+  td {
+    padding: 5pt 10pt;
+    vertical-align: top;
+  }
+  tr:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+  ul, ol {
+    margin-bottom: 8pt;
+    padding-left: 20pt;
+  }
+  li {
+    margin-bottom: 4pt;
+  }
+  .badge {
+    display: inline-block;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 2pt 8pt;
+    border-radius: 4pt;
+    font-size: 9pt;
+    font-weight: bold;
+    margin-right: 4pt;
+  }
+  .badge-blue {
+    background-color: #e3f2fd;
+    color: #1565c0;
+  }
+  .badge-orange {
+    background-color: #fff3e0;
+    color: #e65100;
+  }
+  .badge-red {
+    background-color: #fbe9e7;
+    color: #c62828;
+  }
+  .priority-high { color: #c62828; font-weight: bold; }
+  .priority-medium { color: #e65100; font-weight: bold; }
+  .priority-low { color: #1565c0; font-weight: bold; }
+  .status-done { color: #2e7d32; font-weight: bold; }
+  .status-partial { color: #e65100; font-weight: bold; }
+  .status-pending { color: #c62828; font-weight: bold; }
+  .toc {
+    background-color: #f9fbe7;
+    border: 1pt solid #c5e1a5;
+    padding: 16pt;
+    margin: 16pt 0;
+  }
+  .toc a {
+    color: #2e7d32;
+    text-decoration: none;
+  }
+  .note {
+    background-color: #e8f5e9;
+    border-left: 4pt solid #2e7d32;
+    padding: 10pt 14pt;
+    margin: 10pt 0;
+    font-size: 10pt;
+  }
+  .warning {
+    background-color: #fff3e0;
+    border-left: 4pt solid #e65100;
+    padding: 10pt 14pt;
+    margin: 10pt 0;
+    font-size: 10pt;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+  .section-divider {
+    border: 0;
+    border-top: 2pt solid #e0e0e0;
+    margin: 20pt 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- COVER PAGE -->
+<!-- ============================================ -->
+<div class="cover-page">
+  <h1>VetKind India</h1>
+  <div class="subtitle">Product Requirements Document (PRD)</div>
+  <div style="margin: 40pt 0;">
+    <div style="font-size: 14pt; color: #555; line-height: 2;">
+      Veterinary Nutrition &amp; Phytogenic Solutions Platform
+    </div>
+  </div>
+  <div style="margin-top: 80pt;">
+    <table style="width: 60%; margin: 0 auto; border: 1pt solid #ddd;">
+      <tr><td style="background: #f5f5f5; font-weight: bold; width: 40%;">Document Version</td><td>1.0</td></tr>
+      <tr><td style="background: #f5f5f5; font-weight: bold;">Date</td><td>August 12, 2026</td></tr>
+      <tr><td style="background: #f5f5f5; font-weight: bold;">Author</td><td>GoTechSolutions</td></tr>
+      <tr><td style="background: #f5f5f5; font-weight: bold;">Status</td><td>Active Development</td></tr>
+      <tr><td style="background: #f5f5f5; font-weight: bold;">Repository</td><td>github.com/Nileshmnit08/vetkindIndia</td></tr>
+      <tr><td style="background: #f5f5f5; font-weight: bold;">Tech Stack</td><td>Next.js 16, React 19, Prisma, SQLite, NextAuth v5</td></tr>
+    </table>
+  </div>
+  <div class="company" style="margin-top: 60pt;">
+    VetKind &mdash; Smarter Animal Health. Better Dairy Performance.
+  </div>
+  <div class="meta" style="margin-top: 8pt;">Jaipur, Rajasthan, India</div>
+</div>
+
+<!-- ============================================ -->
+<!-- TABLE OF CONTENTS -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2>Table of Contents</h2>
+<div class="toc">
+  <ol style="line-height: 2.2;">
+    <li><a href="#sec1">Executive Summary</a></li>
+    <li><a href="#sec2">Product Vision &amp; Goals</a></li>
+    <li><a href="#sec3">Target Audience &amp; User Personas</a></li>
+    <li><a href="#sec4">System Architecture &amp; Technology Stack</a></li>
+    <li><a href="#sec5">Information Architecture &amp; Route Map</a></li>
+    <li><a href="#sec6">Data Model &amp; Database Schema</a></li>
+    <li><a href="#sec7">Feature Specifications &mdash; Public Website</a></li>
+    <li><a href="#sec8">Feature Specifications &mdash; Admin Portal</a></li>
+    <li><a href="#sec9">Feature Specifications &mdash; Distributor Portal</a></li>
+    <li><a href="#sec10">Authentication &amp; Authorization</a></li>
+    <li><a href="#sec11">Content Management System (CMS)</a></li>
+    <li><a href="#sec12">API &amp; Server Actions</a></li>
+    <li><a href="#sec13">SEO &amp; Performance Requirements</a></li>
+    <li><a href="#sec14">Testing Strategy</a></li>
+    <li><a href="#sec15">Pre-Launch Checklist &amp; Placeholders</a></li>
+    <li><a href="#sec16">Future Roadmap</a></li>
+    <li><a href="#sec17">Appendix: Environment Variables &amp; Configuration</a></li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<!-- 1. EXECUTIVE SUMMARY -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec1">1. Executive Summary</h2>
+
+<p>VetKind India is a comprehensive web platform for a veterinary nutrition and phytogenic solutions company based in Jaipur, Rajasthan. The platform serves as both a customer-facing product showcase and an internal business management tool.</p>
+
+<p>The application is built on <strong>Next.js 16</strong> with <strong>React 19</strong>, utilizing server-side rendering (SSR) and server components for performance and SEO. It employs a <strong>three-portal architecture</strong>:</p>
+
+<ol>
+  <li><strong>Public Website</strong> &mdash; Product catalogue, solutions, knowledge base, blog, news &amp; events, research articles, company information, and contact/inquiry forms.</li>
+  <li><strong>Admin Portal</strong> &mdash; Full CRUD management for products, species, solutions, knowledge articles, research articles, news &amp; events, blog posts, distributors, inquiries, and user accounts.</li>
+  <li><strong>Distributor Portal</strong> &mdash; Dedicated dashboard for authorized distributors to access product resources, brochures, datasheets, pricing, and manage order requests.</li>
+</ol>
+
+<div class="note">
+  <strong>Current Status:</strong> The platform is in active development. Core features (product management, content modules, admin dashboard, distributor portal) are functional. Authentication is temporarily bypassed for admin/distributor routes during development. Pre-launch items (contact details, Google Maps, CRM integration) remain as placeholders.
+</div>
+
+<!-- ============================================ -->
+<!-- 2. PRODUCT VISION & GOALS -->
+<!-- ============================================ -->
+<h2 id="sec2">2. Product Vision &amp; Goals</h2>
+
+<h3>2.1 Mission Statement</h3>
+<p>To empower Indian farmers and veterinarians with premium, science-backed nutritional solutions that sustainably improve animal welfare, optimize performance, and drive tangible farm profitability.</p>
+
+<h3>2.2 Vision Statement</h3>
+<p>To be India&rsquo;s most trusted veterinary nutrition brand, recognized for uncompromising integrity, rigorous research, and practical field impact across every major livestock production system.</p>
+
+<h3>2.3 Business Goals</h3>
+<table>
+  <tr><th>Goal</th><th>Description</th><th>Priority</th></tr>
+  <tr><td>Digital Product Showcase</td><td>Present the full product catalogue with species-based filtering, search, and detailed product pages.</td><td class="priority-high">HIGH</td></tr>
+  <tr><td>Lead Generation</td><td>Capture inquiries from potential customers and distributor applicants via context-aware contact forms.</td><td class="priority-high">HIGH</td></tr>
+  <tr><td>Distributor Enablement</td><td>Provide a self-service portal for distributors to access resources, product documents, and manage inquiries.</td><td class="priority-high">HIGH</td></tr>
+  <tr><td>Content Marketing</td><td>Publish blog posts, research articles, knowledge base content, and news/events to establish thought leadership.</td><td class="priority-medium">MEDIUM</td></tr>
+  <tr><td>Operational Efficiency</td><td>Centralize product, content, and user management through the admin portal.</td><td class="priority-high">HIGH</td></tr>
+  <tr><td>Brand Building</td><td>Communicate VetKind&rsquo;s science-backed, farmer-centric brand positioning through design and content.</td><td class="priority-medium">MEDIUM</td></tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 3. TARGET AUDIENCE & USER PERSONAS -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec3">3. Target Audience &amp; User Personas</h2>
+
+<h3>3.1 Primary Personas</h3>
+
+<table>
+  <tr><th>Persona</th><th>Role</th><th>Needs</th><th>Platform Access</th></tr>
+  <tr>
+    <td><strong>Dairy Farmer</strong></td>
+    <td>Farm owner/manager</td>
+    <td>Find products by species (cattle, buffalo, poultry, pets). Understand product benefits. Contact for advice.</td>
+    <td>Public website</td>
+  </tr>
+  <tr>
+    <td><strong>Veterinarian</strong></td>
+    <td>Veterinary practitioner</td>
+    <td>Access research-backed product information, technical datasheets, and knowledge articles.</td>
+    <td>Public website, Knowledge Centre</td>
+  </tr>
+  <tr>
+    <td><strong>Distributor</strong></td>
+    <td>Authorized channel partner</td>
+    <td>Access product brochures, pricing sheets, order resources, manage inquiries from farmers.</td>
+    <td>Distributor Portal (authenticated)</td>
+  </tr>
+  <tr>
+    <td><strong>VetKind Admin</strong></td>
+    <td>Internal team member</td>
+    <td>Manage products, content, users, distributors, and inquiries from a single dashboard.</td>
+    <td>Admin Portal (authenticated)</td>
+  </tr>
+  <tr>
+    <td><strong>Potential Distributor</strong></td>
+    <td>Business applicant</td>
+    <td>Submit distributor inquiry with company details, GST info, and coverage region.</td>
+    <td>Public website (Distributor Inquiry form)</td>
+  </tr>
+</table>
+
+<h3>3.2 User Roles &amp; Access Levels</h3>
+<table>
+  <tr><th>Role</th><th>Access Scope</th><th>Description</th></tr>
+  <tr><td><strong>ADMIN</strong></td><td>Full platform access</td><td>Can manage all products, content, users, distributors, and system settings.</td></tr>
+  <tr><td><strong>DISTRIBUTOR</strong></td><td>Distributor Portal only</td><td>Can view products, download resources, view/manage their inquiries.</td></tr>
+  <tr><td><strong>USER</strong></td><td>Public website + Dashboard</td><td>Default registered user. Can access basic dashboard.</td></tr>
+  <tr><td><strong>Guest</strong></td><td>Public website only</td><td>Unauthenticated visitor. Full access to public content.</td></tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 4. SYSTEM ARCHITECTURE -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec4">4. System Architecture &amp; Technology Stack</h2>
+
+<h3>4.1 Technology Stack</h3>
+<table>
+  <tr><th>Layer</th><th>Technology</th><th>Version</th><th>Purpose</th></tr>
+  <tr><td>Framework</td><td>Next.js</td><td>16.3.0</td><td>Full-stack React framework with SSR, API routes, server components</td></tr>
+  <tr><td>UI Library</td><td>React</td><td>19.2.8</td><td>Component-based user interface</td></tr>
+  <tr><td>Language</td><td>TypeScript</td><td>5.x</td><td>Type-safe development</td></tr>
+  <tr><td>ORM</td><td>Prisma</td><td>5.22.0</td><td>Database access layer with schema-first approach</td></tr>
+  <tr><td>Database</td><td>SQLite</td><td>-</td><td>Development database (file-based)</td></tr>
+  <tr><td>Cloud DB</td><td>Supabase</td><td>2.112.2</td><td>Production database (PostgreSQL) and file storage</td></tr>
+  <tr><td>Authentication</td><td>NextAuth.js v5</td><td>5.0.0-beta.32</td><td>Credentials-based authentication with JWT sessions</td></tr>
+  <tr><td>Styling</td><td>Tailwind CSS</td><td>4.x</td><td>Utility-first CSS framework</td></tr>
+  <tr><td>UI Components</td><td>shadcn/ui</td><td>4.16.2</td><td>Pre-built accessible component primitives</td></tr>
+  <tr><td>Icons</td><td>Lucide React</td><td>1.31.0</td><td>Icon library (tree-shakeable SVG icons)</td></tr>
+  <tr><td>Charts</td><td>Recharts</td><td>3.10.1</td><td>Dashboard data visualizations</td></tr>
+  <tr><td>Typography</td><td>Geist / Geist Mono</td><td>-</td><td>Google Fonts for clean modern look</td></tr>
+  <tr><td>Password Hashing</td><td>bcryptjs</td><td>3.0.3</td><td>Secure password hashing</td></tr>
+  <tr><td>Testing (Unit)</td><td>Jest</td><td>30.4.2</td><td>Unit and integration testing</td></tr>
+  <tr><td>Testing (E2E)</td><td>Playwright</td><td>1.62.1</td><td>End-to-end browser testing</td></tr>
+</table>
+
+<h3>4.2 Architecture Diagram</h3>
+<table style="width:100%; text-align:center;">
+  <tr>
+    <td colspan="5" style="background: #e8f5e9; font-weight: bold; font-size: 12pt; padding: 10pt;">Public Website (SSR)</td>
+  </tr>
+  <tr>
+    <td style="background: #c8e6c9; padding: 8pt;">Homepage</td>
+    <td style="background: #c8e6c9; padding: 8pt;">Products</td>
+    <td style="background: #c8e6c9; padding: 8pt;">Solutions</td>
+    <td style="background: #c8e6c9; padding: 8pt;">Content Hub</td>
+    <td style="background: #c8e6c9; padding: 8pt;">Contact</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="background: #bbdefb; font-weight: bold; padding: 10pt;">Admin Portal</td>
+    <td colspan="1" style="background: #e0e0e0; padding: 10pt;">&darr;</td>
+    <td colspan="2" style="background: #ffe0b2; font-weight: bold; padding: 10pt;">Distributor Portal</td>
+  </tr>
+  <tr>
+    <td colspan="5" style="background: #f5f5f5; padding: 8pt;">Next.js Server Actions &amp; API Routes</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="background: #e1f5fe; padding: 8pt;">Prisma ORM</td>
+    <td style="background: #e0e0e0; padding: 8pt;">&darr;</td>
+    <td colspan="2" style="background: #fce4ec; padding: 8pt;">NextAuth v5 (JWT)</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="background: #e8eaf6; padding: 8pt;">SQLite (Dev)</td>
+    <td style="background: #e0e0e0; padding: 8pt;">/</td>
+    <td colspan="2" style="background: #e8eaf6; padding: 8pt;">Supabase PostgreSQL (Prod)</td>
+  </tr>
+</table>
+
+<h3>4.3 Key Architectural Decisions</h3>
+<ul>
+  <li><strong>Server Components First:</strong> All pages use React Server Components by default for performance and SEO.</li>
+  <li><strong>Server Actions:</strong> All data mutations (CRUD) are handled via Next.js Server Actions, eliminating the need for separate API endpoints.</li>
+  <li><strong>Route Groups:</strong> Next.js route groups <code>(admin)</code>, <code>(auth)</code>, <code>(distributor)</code> enable separate layouts per portal.</li>
+  <li><strong>Shared Root Layout:</strong> The public website header and footer wrap all public pages via the root layout.</li>
+  <li><strong>Dual Database Strategy:</strong> SQLite for local development; Supabase (PostgreSQL) for production, managed via environment variables.</li>
+</ul>
+
+<!-- ============================================ -->
+<!-- 5. INFORMATION ARCHITECTURE -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec5">5. Information Architecture &amp; Route Map</h2>
+
+<h3>5.1 Public Routes</h3>
+<table>
+  <tr><th>Route</th><th>Page</th><th>Description</th></tr>
+  <tr><td><code>/</code></td><td>Homepage</td><td>Hero section, trust bar, species navigation, best sellers, solutions, featured products, knowledge centre, CTA</td></tr>
+  <tr><td><code>/products</code></td><td>Product Catalogue</td><td>All products with species-based filtering, search, sorting</td></tr>
+  <tr><td><code>/products/[slug]</code></td><td>Product Detail</td><td>Individual product page with full description, benefits, resources</td></tr>
+  <tr><td><code>/solutions</code></td><td>Solutions Catalogue</td><td>All veterinary solutions with category filtering</td></tr>
+  <tr><td><code>/solutions/[slug]</code></td><td>Solution Detail</td><td>Individual solution page with related products and articles</td></tr>
+  <tr><td><code>/knowledge</code></td><td>Knowledge Centre</td><td>Educational articles listing with category/status filters</td></tr>
+  <tr><td><code>/knowledge/[slug]</code></td><td>Knowledge Article</td><td>Individual knowledge article with rich content</td></tr>
+  <tr><td><code>/research</code></td><td>Research Hub</td><td>Research articles and scientific publications listing</td></tr>
+  <tr><td><code>/blog</code></td><td>Blog</td><td>Blog posts listing with category and tag filtering</td></tr>
+  <tr><td><code>/blog/[slug]</code></td><td>Blog Post</td><td>Individual blog post</td></tr>
+  <tr><td><code>/news-events</code></td><td>News &amp; Events</td><td>Company news and industry events listing</td></tr>
+  <tr><td><code>/news-events/[slug]</code></td><td>News/Event Detail</td><td>Individual news article or event details</td></tr>
+  <tr><td><code>/about</code></td><td>About Us</td><td>Mission, vision, philosophy, R&amp;D centre, company story</td></tr>
+  <tr><td><code>/contact</code></td><td>Contact Us</td><td>Contact form (context-aware), company info, WhatsApp integration, Google Maps placeholder</td></tr>
+  <tr><td><code>/manufacturing</code></td><td>Manufacturing</td><td>Manufacturing capabilities and facilities information</td></tr>
+  <tr><td><code>/quality</code></td><td>Quality Assurance</td><td>Quality control processes and certifications</td></tr>
+  <tr><td><code>/distributor-inquiry</code></td><td>Become a Distributor</td><td>Distributor application form</td></tr>
+</table>
+
+<h3>5.2 Authentication Routes</h3>
+<table>
+  <tr><th>Route</th><th>Page</th><th>Description</th></tr>
+  <tr><td><code>/login</code></td><td>Login</td><td>Email/password authentication</td></tr>
+  <tr><td><code>/register</code></td><td>Register</td><td>New user registration</td></tr>
+  <tr><td><code>/forgot-password</code></td><td>Forgot Password</td><td>Password reset request</td></tr>
+  <tr><td><code>/reset-password</code></td><td>Reset Password</td><td>Password reset with token</td></tr>
+</table>
+
+<h3>5.3 Admin Portal Routes (<code>/admin/*</code>)</h3>
+<table>
+  <tr><th>Route</th><th>Page</th><th>Description</th></tr>
+  <tr><td><code>/admin/dashboard</code></td><td>Admin Dashboard</td><td>Overview metrics, recent activity, quick stats</td></tr>
+  <tr><td><code>/admin/products</code></td><td>Product Management</td><td>CRUD table for all products with filters</td></tr>
+  <tr><td><code>/admin/products/new</code></td><td>Add Product</td><td>Create new product form</td></tr>
+  <tr><td><code>/admin/products/[id]/edit</code></td><td>Edit Product</td><td>Edit existing product</td></tr>
+  <tr><td><code>/admin/species</code></td><td>Species Management</td><td>Manage animal species categories</td></tr>
+  <tr><td><code>/admin/species/[id]/edit</code></td><td>Edit Species</td><td>Edit existing species</td></tr>
+  <tr><td><code>/admin/solutions</code></td><td>Solutions Management</td><td>CRUD for veterinary solutions</td></tr>
+  <tr><td><code>/admin/solutions/new</code></td><td>Add Solution</td><td>Create new solution</td></tr>
+  <tr><td><code>/admin/solutions/[id]/edit</code></td><td>Edit Solution</td><td>Edit existing solution</td></tr>
+  <tr><td><code>/admin/knowledge</code></td><td>Knowledge Articles</td><td>CRUD for knowledge base articles</td></tr>
+  <tr><td><code>/admin/knowledge/new</code></td><td>Add Knowledge Article</td><td>Create new knowledge article</td></tr>
+  <tr><td><code>/admin/knowledge/[id]/edit</code></td><td>Edit Knowledge Article</td><td>Edit existing knowledge article</td></tr>
+  <tr><td><code>/admin/research</code></td><td>Research Articles</td><td>CRUD for research publications</td></tr>
+  <tr><td><code>/admin/research/new</code></td><td>Add Research Article</td><td>Create new research article</td></tr>
+  <tr><td><code>/admin/research/[id]/edit</code></td><td>Edit Research Article</td><td>Edit existing research article</td></tr>
+  <tr><td><code>/admin/news-events</code></td><td>News &amp; Events</td><td>CRUD for news articles and events</td></tr>
+  <tr><td><code>/admin/news-events/new</code></td><td>Add News/Event</td><td>Create new news article or event</td></tr>
+  <tr><td><code>/admin/news-events/[id]/edit</code></td><td>Edit News/Event</td><td>Edit existing news/event</td></tr>
+  <tr><td><code>/admin/blog</code></td><td>Blog Management</td><td>CRUD for blog posts</td></tr>
+  <tr><td><code>/admin/blog/new</code></td><td>Add Blog Post</td><td>Create new blog post</td></tr>
+  <tr><td><code>/admin/blog/[id]/edit</code></td><td>Edit Blog Post</td><td>Edit existing blog post</td></tr>
+  <tr><td><code>/admin/distributors</code></td><td>Distributor Management</td><td>View/manage distributor accounts and profiles</td></tr>
+  <tr><td><code>/admin/inquiries</code></td><td>Inquiry Management</td><td>View/manage customer and distributor inquiries</td></tr>
+</table>
+
+<h3>5.4 Distributor Portal Routes (<code>/distributor/*</code>)</h3>
+<table>
+  <tr><th>Route</th><th>Page</th><th>Description</th></tr>
+  <tr><td><code>/distributor/dashboard</code></td><td>Distributor Dashboard</td><td>Overview, recent activity, quick access links</td></tr>
+  <tr><td><code>/distributor/products</code></td><td>Products &amp; Resources</td><td>Browse products, download brochures/datasheets/pricing docs</td></tr>
+  <tr><td><code>/distributor/inquiries</code></td><td>Order Requests</td><td>View and manage incoming inquiries from customers</td></tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 6. DATA MODEL -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec6">6. Data Model &amp; Database Schema</h2>
+
+<h3>6.1 Entity Overview</h3>
+<table>
+  <tr><th>Model</th><th>Purpose</th><th>Key Fields</th><th>Relations</th></tr>
+  <tr>
+    <td><strong>User</strong></td>
+    <td>Authentication &amp; authorization</td>
+    <td>id, name, email, password, role (ADMIN/DISTRIBUTOR/USER), status (ACTIVE/INACTIVE/PENDING)</td>
+    <td>Has one DistributorProfile, has many Inquiries</td>
+  </tr>
+  <tr>
+    <td><strong>DistributorProfile</strong></td>
+    <td>Extended distributor info</td>
+    <td>companyName, phone, address, region, gstNumber</td>
+    <td>Belongs to User (1:1)</td>
+  </tr>
+  <tr>
+    <td><strong>Species</strong></td>
+    <td>Animal species categories</td>
+    <td>name, slug, description, image, featured, isActive, sortOrder</td>
+    <td>Has many Products</td>
+  </tr>
+  <tr>
+    <td><strong>Product</strong></td>
+    <td>Veterinary products</td>
+    <td>name, slug, category, benefits, productType, badges, packSize, description, shortDescription, price, image, featured, bestseller, published</td>
+    <td>Belongs to Species (optional), has many ProductResources</td>
+  </tr>
+  <tr>
+    <td><strong>ProductResource</strong></td>
+    <td>Downloadable documents</td>
+    <td>title, fileUrl, resourceType (BROCHURE/DATASHEET/PRICING/OTHER), visibility (PUBLIC/DISTRIBUTOR/ADMIN)</td>
+    <td>Belongs to Product</td>
+  </tr>
+  <tr>
+    <td><strong>Inquiry</strong></td>
+    <td>Customer/distributor inquiries</td>
+    <td>name, company, email, phone, message, status (NEW/CONTACTED/CLOSED)</td>
+    <td>Belongs to User (optional)</td>
+  </tr>
+  <tr>
+    <td><strong>Solution</strong></td>
+    <td>Veterinary solutions by health need</td>
+    <td>title, slug, shortSummary, fullContent, heroImage, iconName, speciesTags, benefits, relatedProducts, featured, sortOrder, status (DRAFT/PUBLISHED/ARCHIVED), SEO fields</td>
+    <td>Standalone (uses JSON strings for tags/products)</td>
+  </tr>
+  <tr>
+    <td><strong>KnowledgeArticle</strong></td>
+    <td>Educational content</td>
+    <td>title, slug, category, excerpt, coverImage, articleContent, author, readTime, publishedAt, featured, status, SEO fields</td>
+    <td>Standalone</td>
+  </tr>
+  <tr>
+    <td><strong>ResearchArticle</strong></td>
+    <td>Scientific publications</td>
+    <td>title, slug, category, excerpt, coverImage, articleContent, author, publishedAt, status, SEO fields</td>
+    <td>Standalone</td>
+  </tr>
+  <tr>
+    <td><strong>NewsEvent</strong></td>
+    <td>Company news &amp; events</td>
+    <td>title, slug, summary, coverImage, content, type (NEWS/EVENT), eventDate, location, publishedAt, featured, status, SEO fields</td>
+    <td>Standalone</td>
+  </tr>
+  <tr>
+    <td><strong>BlogArticle</strong></td>
+    <td>Blog posts</td>
+    <td>title, slug, excerpt, coverImage, articleContent, author, category, tags, publishedAt, featured, status, SEO fields</td>
+    <td>Standalone</td>
+  </tr>
+</table>
+
+<h3>6.2 Content Status Workflow</h3>
+<p>All content models (Solution, KnowledgeArticle, ResearchArticle, NewsEvent, BlogArticle) follow a common publishing workflow:</p>
+<table>
+  <tr><th>Status</th><th>Description</th><th>Visibility</th></tr>
+  <tr><td><strong>DRAFT</strong></td><td>Content is being created/edited. Not visible to the public.</td><td>Admin Portal only</td></tr>
+  <tr><td><strong>PUBLISHED</strong></td><td>Content is live and visible to all public visitors.</td><td>Public website + Admin Portal</td></tr>
+  <tr><td><strong>ARCHIVED</strong></td><td>Content is retired. Hidden from public, accessible in admin for reference.</td><td>Admin Portal only</td></tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 7. FEATURE SPECS — PUBLIC WEBSITE -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec7">7. Feature Specifications &mdash; Public Website</h2>
+
+<h3>7.1 Homepage</h3>
+<p>The homepage is designed as a conversion-oriented landing page with 10 distinct sections:</p>
+<table>
+  <tr><th>#</th><th>Section</th><th>Purpose</th><th>Content Source</th></tr>
+  <tr><td>1</td><td>Hero Section</td><td>Primary brand message + CTAs (Explore Products, Talk to Expert)</td><td>Static content</td></tr>
+  <tr><td>2</td><td>Trust Bar</td><td>5 trust signals: Science Backed, Quality Assured, Research Driven, Veterinary Expertise, Farmer Focused</td><td>Static content</td></tr>
+  <tr><td>3</td><td>Explore by Animal</td><td>Species navigation cards (Cattle, Poultry, Pets, Buffalo, Feed &amp; Nutrition) linking to filtered products</td><td>Static categories with dynamic links</td></tr>
+  <tr><td>4</td><td>Best Selling Products</td><td>4 best-selling products with &ldquo;View all products&rdquo; link</td><td>Database (sorted by popular/bestseller flag)</td></tr>
+  <tr><td>5</td><td>Solutions by Need</td><td>Featured solutions grid (up to 8) with icons and hover animations</td><td>Database (featured, published solutions)</td></tr>
+  <tr><td>6</td><td>Why Choose VetKind?</td><td>6 brand differentiators with checkmark list</td><td>Static content</td></tr>
+  <tr><td>7</td><td>Our Approach</td><td>3-step process: Research &rarr; Formulate &rarr; Validate</td><td>Static content</td></tr>
+  <tr><td>8</td><td>Featured Products</td><td>3 featured products showcase</td><td>Database (featured flag)</td></tr>
+  <tr><td>9</td><td>Knowledge Centre</td><td>3 latest knowledge articles with images, categories, dates</td><td>Database (published articles)</td></tr>
+  <tr><td>10</td><td>CTA Section</td><td>&ldquo;Need help choosing?&rdquo; with green gradient background and action buttons</td><td>Static content</td></tr>
+</table>
+
+<h3>7.2 Product Catalogue (<code>/products</code>)</h3>
+<h4>Functional Requirements</h4>
+<ul>
+  <li>Display all published products in a responsive grid (1-4 columns based on viewport)</li>
+  <li>Species-based filtering via URL query parameters (<code>?species=cow</code>)</li>
+  <li>Text search with debounced input</li>
+  <li>Sorting options: popularity, newest, featured</li>
+  <li>Product cards showing: image, name, species badge, category, short description, bestseller/featured badges</li>
+  <li>Each card links to the product detail page</li>
+</ul>
+
+<h3>7.3 Product Detail (<code>/products/[slug]</code>)</h3>
+<h4>Functional Requirements</h4>
+<ul>
+  <li>Product hero with image, name, species, category</li>
+  <li>Full description with benefits listing</li>
+  <li>Pack size and pricing information</li>
+  <li>Product badges (bestseller, featured)</li>
+  <li>Downloadable resources (public visibility only for unauthenticated users)</li>
+  <li>CTA to contact with product context (<code>/contact?product={slug}</code>)</li>
+</ul>
+
+<h3>7.4 Solutions Catalogue &amp; Detail</h3>
+<ul>
+  <li>Solutions listing with category filter and search</li>
+  <li>Each solution has: title, icon, short summary, species tags</li>
+  <li>Detail page shows full content, benefits, related products, and linked knowledge articles</li>
+</ul>
+
+<h3>7.5 Content Hub (Knowledge, Research, Blog, News &amp; Events)</h3>
+<table>
+  <tr><th>Section</th><th>Features</th><th>Detail Page</th></tr>
+  <tr><td><strong>Knowledge Centre</strong></td><td>Category filtering, cover images, read time, author, published date</td><td>Full article with rich text content</td></tr>
+  <tr><td><strong>Research Hub</strong></td><td>Category filtering, scientific content, author attribution</td><td>Full research article</td></tr>
+  <tr><td><strong>Blog</strong></td><td>Category &amp; tag filtering, author, featured posts</td><td>Full blog post with metadata</td></tr>
+  <tr><td><strong>News &amp; Events</strong></td><td>Type filter (NEWS/EVENT), event dates, location, featured items</td><td>Full article with event-specific details</td></tr>
+</table>
+
+<h3>7.6 Contact Page</h3>
+<ul>
+  <li>Context-aware form: accepts <code>?product=slug</code> or <code>?solution=slug</code> query parameters to pre-fill context</li>
+  <li>Form fields: name, email, phone, message, subject</li>
+  <li>Company information display (address, phone, email &mdash; currently placeholders)</li>
+  <li>WhatsApp integration via <code>NEXT_PUBLIC_WHATSAPP_NUMBER</code> environment variable</li>
+  <li>Google Maps integration placeholder</li>
+  <li>Server Action processes form submission (currently simulates &mdash; needs CRM/email provider integration)</li>
+</ul>
+
+<h3>7.7 Company Pages</h3>
+<table>
+  <tr><th>Page</th><th>Content</th></tr>
+  <tr><td><strong>About Us</strong></td><td>Hero, mission &amp; vision statements, &ldquo;Why VetKind&rdquo; features (3 cards), philosophy section, Jaipur R&amp;D Centre showcase</td></tr>
+  <tr><td><strong>Manufacturing</strong></td><td>Manufacturing capabilities and facility information</td></tr>
+  <tr><td><strong>Quality Assurance</strong></td><td>Quality control processes and certifications</td></tr>
+</table>
+
+<h3>7.8 Distributor Inquiry Form</h3>
+<ul>
+  <li>Public form for prospective distributors to apply</li>
+  <li>Collects: company name, contact details, GST number, region, message</li>
+  <li>Submissions stored as Inquiry records in the database</li>
+</ul>
+
+<h3>7.9 Global Navigation</h3>
+<ul>
+  <li>Persistent header with logo, main navigation links, and auth-aware controls</li>
+  <li>Shows login/register for guests, dashboard link for authenticated users</li>
+  <li>Role-based redirection (Admin &rarr; Admin Dashboard, Distributor &rarr; Distributor Dashboard)</li>
+  <li>Footer with product links, species-based navigation, company info, social links</li>
+</ul>
+
+<!-- ============================================ -->
+<!-- 8. FEATURE SPECS — ADMIN PORTAL -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec8">8. Feature Specifications &mdash; Admin Portal</h2>
+
+<h3>8.1 Admin Dashboard (<code>/admin/dashboard</code>)</h3>
+<ul>
+  <li>Summary statistics: total products, active species, total inquiries, registered users</li>
+  <li>Recent inquiry activity</li>
+  <li>Quick action links to manage content</li>
+  <li>Charts/visualizations via Recharts library</li>
+</ul>
+
+<h3>8.2 Admin Layout</h3>
+<ul>
+  <li>Fixed left sidebar (hidden on mobile) with icon-based navigation</li>
+  <li>Two navigation groups: Core (Dashboard, Products, Distributors, Inquiries) and Content (Solutions, Knowledge, Research, News &amp; Events, Blog)</li>
+  <li>User profile section with name, role, and logout button</li>
+  <li>Session-validated: redirects to login if user is not ADMIN</li>
+</ul>
+
+<h3>8.3 Content Management Modules</h3>
+<p>All admin content modules follow a consistent pattern:</p>
+
+<table>
+  <tr><th>Feature</th><th>Description</th></tr>
+  <tr><td><strong>Listing Page</strong></td><td>Data table with search, filters (category, status), and action buttons</td></tr>
+  <tr><td><strong>Filters</strong></td><td>Dedicated filter components: <code>ProductFilters</code>, <code>ContentFilters</code>, <code>KnowledgeFilters</code>, <code>ResearchFilters</code>, <code>SolutionFilters</code>, <code>DistributorFilters</code>, <code>BlogFilters</code></td></tr>
+  <tr><td><strong>Table Actions</strong></td><td>Per-row actions: Edit, Delete, Toggle Status. Dedicated action components for each module.</td></tr>
+  <tr><td><strong>Create Form</strong></td><td>Full-featured form with validation for creating new records</td></tr>
+  <tr><td><strong>Edit Form</strong></td><td>Pre-populated form for editing existing records</td></tr>
+  <tr><td><strong>Delete</strong></td><td>Confirmation-based deletion with cascade handling</td></tr>
+</table>
+
+<h3>8.4 Admin Modules Detail</h3>
+
+<table>
+  <tr><th>Module</th><th>Form Component</th><th>Actions Component</th><th>Key Form Fields</th></tr>
+  <tr>
+    <td>Products</td><td>ProductForm</td><td>ProductTableActions</td>
+    <td>Name, slug, species, category, benefits, productType, badges, packSize, description, shortDescription, price, image URL, featured, bestseller, published</td>
+  </tr>
+  <tr>
+    <td>Species</td><td>SpeciesForm</td><td>SpeciesTable</td>
+    <td>Name, slug, description, image URL, featured, isActive, sortOrder</td>
+  </tr>
+  <tr>
+    <td>Solutions</td><td>SolutionForm</td><td>SolutionTableActions</td>
+    <td>Title, slug, shortSummary, fullContent, heroImage, iconName, speciesTags, benefits, relatedProducts, featured, sortOrder, status, SEO title/description</td>
+  </tr>
+  <tr>
+    <td>Knowledge</td><td>KnowledgeForm</td><td>KnowledgeTableActions</td>
+    <td>Title, slug, category, excerpt, coverImage, articleContent, author, readTime, publishedAt, featured, status, SEO fields</td>
+  </tr>
+  <tr>
+    <td>Research</td><td>ResearchForm</td><td>ResearchTableActions</td>
+    <td>Title, slug, category, excerpt, coverImage, articleContent, author, publishedAt, status, SEO fields</td>
+  </tr>
+  <tr>
+    <td>News &amp; Events</td><td>NewsEventForm</td><td>NewsEventTableActions</td>
+    <td>Title, slug, summary, coverImage, content, type, eventDate, location, publishedAt, featured, status, SEO fields</td>
+  </tr>
+  <tr>
+    <td>Blog</td><td>BlogForm</td><td>BlogTableActions</td>
+    <td>Title, slug, excerpt, coverImage, articleContent, author, category, tags, publishedAt, featured, status, SEO fields</td>
+  </tr>
+  <tr>
+    <td>Distributors</td><td>&mdash;</td><td>DistributorTableActions</td>
+    <td>View/manage distributor profiles, approve/reject, change status</td>
+  </tr>
+  <tr>
+    <td>Inquiries</td><td>&mdash;</td><td>&mdash;</td>
+    <td>View inquiries, update status (NEW &rarr; CONTACTED &rarr; CLOSED)</td>
+  </tr>
+</table>
+
+<h3>8.5 User Management</h3>
+<ul>
+  <li>Component: <code>UserManagement.tsx</code> (16KB &mdash; full-featured)</li>
+  <li>View all registered users with role and status</li>
+  <li>Create new users (admin can set role: ADMIN, DISTRIBUTOR, USER)</li>
+  <li>Edit user profiles, change roles, activate/deactivate accounts</li>
+  <li>For DISTRIBUTOR users: manage associated DistributorProfile (company name, phone, address, region, GST number)</li>
+  <li>Password management for user accounts</li>
+</ul>
+
+<!-- ============================================ -->
+<!-- 9. FEATURE SPECS — DISTRIBUTOR PORTAL -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec9">9. Feature Specifications &mdash; Distributor Portal</h2>
+
+<h3>9.1 Overview</h3>
+<p>The distributor portal provides authorized channel partners with a self-service interface to access product resources and manage their business with VetKind.</p>
+
+<h3>9.2 Distributor Layout</h3>
+<ul>
+  <li>Top navigation bar (horizontal) with company branding</li>
+  <li>Three main sections: Dashboard, Products &amp; Resources, Order Requests</li>
+  <li>Session-validated: accessible only to DISTRIBUTOR and ADMIN roles</li>
+  <li>User info display and logout functionality</li>
+</ul>
+
+<h3>9.3 Distributor Features</h3>
+<table>
+  <tr><th>Feature</th><th>Route</th><th>Description</th></tr>
+  <tr><td>Dashboard</td><td><code>/distributor/dashboard</code></td><td>Quick overview of product count, pending orders, recent activity</td></tr>
+  <tr><td>Products &amp; Resources</td><td><code>/distributor/products</code></td><td>Browse all products. Access downloadable resources (brochures, datasheets, pricing) with DISTRIBUTOR or PUBLIC visibility.</td></tr>
+  <tr><td>Order Requests</td><td><code>/distributor/inquiries</code></td><td>View and manage inquiry submissions, update status</td></tr>
+</table>
+
+<h3>9.4 Resource Visibility Model</h3>
+<table>
+  <tr><th>Visibility</th><th>Accessible By</th><th>Example</th></tr>
+  <tr><td><strong>PUBLIC</strong></td><td>All visitors</td><td>General product brochures</td></tr>
+  <tr><td><strong>DISTRIBUTOR</strong></td><td>Distributors + Admins</td><td>Pricing sheets, margin documents</td></tr>
+  <tr><td><strong>ADMIN</strong></td><td>Admins only</td><td>Internal cost breakdowns, formulation docs</td></tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 10. AUTHENTICATION & AUTHORIZATION -->
+<!-- ============================================ -->
+<h2 id="sec10">10. Authentication &amp; Authorization</h2>
+
+<h3>10.1 Authentication Stack</h3>
+<table>
+  <tr><th>Component</th><th>Technology</th><th>Details</th></tr>
+  <tr><td>Auth Library</td><td>NextAuth.js v5 (beta.32)</td><td>Credentials provider with email/password</td></tr>
+  <tr><td>Session Strategy</td><td>JWT</td><td>Stateless sessions stored in HTTP-only cookies</td></tr>
+  <tr><td>Password Hashing</td><td>bcryptjs</td><td>Industry-standard hashing for stored passwords</td></tr>
+  <tr><td>Middleware</td><td>Next.js Middleware</td><td>Route-level access control for all non-static paths</td></tr>
+</table>
+
+<h3>10.2 Authorization Matrix</h3>
+<table>
+  <tr><th>Route Group</th><th>Guest</th><th>USER</th><th>DISTRIBUTOR</th><th>ADMIN</th></tr>
+  <tr><td>Public pages (<code>/</code>, <code>/products</code>, etc.)</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
+  <tr><td>Auth pages (<code>/login</code>, <code>/register</code>)</td><td>&#10003;</td><td>Redirect &rarr; Dashboard</td><td>Redirect &rarr; Dashboard</td><td>Redirect &rarr; Dashboard</td></tr>
+  <tr><td>Dashboard (<code>/dashboard</code>)</td><td>&#10007;</td><td>&#10003;</td><td>Redirect &rarr; /distributor</td><td>Redirect &rarr; /admin</td></tr>
+  <tr><td>Admin Portal (<code>/admin/*</code>)</td><td>&#10007;</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td></tr>
+  <tr><td>Distributor Portal (<code>/distributor/*</code>)</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td></tr>
+</table>
+
+<div class="warning">
+  <strong>⚠ Development Note:</strong> Admin and Distributor route authentication is <strong>temporarily bypassed</strong> during development (<code>return true</code> in <code>auth.config.ts</code>). This MUST be re-enabled before production launch.
+</div>
+
+<!-- ============================================ -->
+<!-- 11. CMS -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec11">11. Content Management System (CMS)</h2>
+
+<h3>11.1 Content Types</h3>
+<p>VetKind uses a headless CMS approach where content is managed via the Admin Portal and consumed by the public website through server components and server actions.</p>
+
+<table>
+  <tr><th>Content Type</th><th>Admin Path</th><th>Public Path</th><th>Content Fields</th></tr>
+  <tr><td>Solutions</td><td><code>/admin/solutions</code></td><td><code>/solutions</code></td><td>Rich text, icons, species tags, benefits list, related products</td></tr>
+  <tr><td>Knowledge Articles</td><td><code>/admin/knowledge</code></td><td><code>/knowledge</code></td><td>Rich text, categories, cover images, read time, author</td></tr>
+  <tr><td>Research Articles</td><td><code>/admin/research</code></td><td><code>/research</code></td><td>Rich text, categories, cover images, author, publication date</td></tr>
+  <tr><td>News &amp; Events</td><td><code>/admin/news-events</code></td><td><code>/news-events</code></td><td>Rich text, type (NEWS/EVENT), event dates, location</td></tr>
+  <tr><td>Blog Posts</td><td><code>/admin/blog</code></td><td><code>/blog</code></td><td>Rich text, categories, tags, cover images, author</td></tr>
+</table>
+
+<h3>11.2 SEO Fields</h3>
+<p>All content types include dedicated SEO fields:</p>
+<ul>
+  <li><strong>seoTitle</strong> &mdash; Custom page title for search engine results</li>
+  <li><strong>seoDescription</strong> &mdash; Custom meta description for search engine results</li>
+  <li><strong>slug</strong> &mdash; URL-friendly identifier for clean URLs</li>
+</ul>
+
+<!-- ============================================ -->
+<!-- 12. API & SERVER ACTIONS -->
+<!-- ============================================ -->
+<h2 id="sec12">12. API &amp; Server Actions</h2>
+
+<h3>12.1 Server Actions</h3>
+<p>All data mutations and queries are handled via Next.js Server Actions located in <code>app/actions/</code>:</p>
+<table>
+  <tr><th>Action File</th><th>Purpose</th><th>Key Operations</th></tr>
+  <tr><td><code>admin.ts</code></td><td>Admin dashboard data</td><td>Get dashboard stats, recent activity</td></tr>
+  <tr><td><code>admin-users.ts</code></td><td>User CRUD</td><td>Create, update, delete users; manage roles/status</td></tr>
+  <tr><td><code>auth.ts</code></td><td>Authentication</td><td>Login, logout, register</td></tr>
+  <tr><td><code>blog.ts</code></td><td>Blog CRUD</td><td>Create, update, delete, list blog articles</td></tr>
+  <tr><td><code>contact.ts</code></td><td>Contact form</td><td>Process contact form submissions</td></tr>
+  <tr><td><code>distributor.ts</code></td><td>Distributor operations</td><td>Distributor-specific data access</td></tr>
+  <tr><td><code>inquiry.ts</code></td><td>Inquiry CRUD</td><td>Create, update status, list inquiries</td></tr>
+  <tr><td><code>knowledge.ts</code></td><td>Knowledge CRUD</td><td>Create, update, delete, list knowledge articles</td></tr>
+  <tr><td><code>news-events.ts</code></td><td>News &amp; Events CRUD</td><td>Create, update, delete, list news/events</td></tr>
+  <tr><td><code>research.ts</code></td><td>Research CRUD</td><td>Create, update, delete, list research articles</td></tr>
+  <tr><td><code>solutions.ts</code></td><td>Solutions CRUD</td><td>Create, update, delete, list solutions</td></tr>
+  <tr><td><code>species.ts</code></td><td>Species CRUD</td><td>Create, update, delete, list species</td></tr>
+</table>
+
+<h3>12.2 Library Layer</h3>
+<table>
+  <tr><th>File</th><th>Purpose</th></tr>
+  <tr><td><code>lib/products/index.ts</code></td><td>Product queries: getProducts(), getFilterOptions(), product search/filter logic</td></tr>
+  <tr><td><code>lib/solutions/index.ts</code></td><td>Solution queries with mock data fallback for development</td></tr>
+  <tr><td><code>lib/knowledge/index.ts</code></td><td>Knowledge article queries</td></tr>
+  <tr><td><code>lib/supabase/index.ts</code></td><td>Supabase client initialization for production use</td></tr>
+  <tr><td><code>lib/data.ts</code></td><td>Shared data constants and types</td></tr>
+  <tr><td><code>lib/utils.ts</code></td><td>Utility functions (cn class merger, etc.)</td></tr>
+</table>
+
+<h3>12.3 API Routes</h3>
+<table>
+  <tr><th>Route</th><th>Purpose</th></tr>
+  <tr><td><code>/api/auth/[...nextauth]</code></td><td>NextAuth.js authentication handlers (login, logout, session, callback)</td></tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 13. SEO & PERFORMANCE -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec13">13. SEO &amp; Performance Requirements</h2>
+
+<h3>13.1 SEO Requirements</h3>
+<table>
+  <tr><th>Requirement</th><th>Implementation</th><th>Status</th></tr>
+  <tr><td>Page titles</td><td><code>metadata</code> export on each page (e.g., &ldquo;About Us | VetKind&rdquo;)</td><td class="status-partial">Partial</td></tr>
+  <tr><td>Meta descriptions</td><td><code>metadata.description</code> on each page</td><td class="status-partial">Partial</td></tr>
+  <tr><td>Semantic HTML</td><td>Proper heading hierarchy (h1 &rarr; h2 &rarr; h3), semantic elements</td><td class="status-done">Done</td></tr>
+  <tr><td>Clean URLs</td><td>Slug-based routing for all content (<code>/products/[slug]</code>)</td><td class="status-done">Done</td></tr>
+  <tr><td>Server-side rendering</td><td>React Server Components for all public pages</td><td class="status-done">Done</td></tr>
+  <tr><td>Image optimization</td><td>Next.js <code>&lt;Image&gt;</code> component with responsive sizes</td><td class="status-done">Done</td></tr>
+  <tr><td>Custom SEO fields</td><td>seoTitle + seoDescription on all content models</td><td class="status-done">Done</td></tr>
+  <tr><td>Sitemap</td><td>Auto-generated sitemap</td><td class="status-pending">Pending</td></tr>
+  <tr><td>robots.txt</td><td>Search engine directives</td><td class="status-pending">Pending</td></tr>
+  <tr><td>Open Graph tags</td><td>Social sharing metadata</td><td class="status-pending">Pending</td></tr>
+  <tr><td>Structured data</td><td>JSON-LD for products, articles, organization</td><td class="status-pending">Pending</td></tr>
+</table>
+
+<h3>13.2 Performance Requirements</h3>
+<table>
+  <tr><th>Metric</th><th>Target</th><th>Approach</th></tr>
+  <tr><td>First Contentful Paint (FCP)</td><td>&lt; 1.5s</td><td>SSR, optimized images, font preloading</td></tr>
+  <tr><td>Largest Contentful Paint (LCP)</td><td>&lt; 2.5s</td><td>Priority image loading, server components</td></tr>
+  <tr><td>Cumulative Layout Shift (CLS)</td><td>&lt; 0.1</td><td>Fixed aspect ratios, sized image containers</td></tr>
+  <tr><td>Time to Interactive (TTI)</td><td>&lt; 3.5s</td><td>Minimal client-side JavaScript, server actions</td></tr>
+  <tr><td>Bundle Size</td><td>Minimized</td><td>Tree-shaking (Lucide), server components, code splitting</td></tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 14. TESTING STRATEGY -->
+<!-- ============================================ -->
+<h2 id="sec14">14. Testing Strategy</h2>
+
+<h3>14.1 Unit Tests (Jest)</h3>
+<table>
+  <tr><th>Test File</th><th>Coverage Area</th></tr>
+  <tr><td><code>__tests__/lib/products.test.ts</code></td><td>Product query logic, filtering, sorting</td></tr>
+  <tr><td><code>__tests__/lib/solutions.test.ts</code></td><td>Solution data access and mock data validation</td></tr>
+</table>
+
+<h3>14.2 End-to-End Tests (Playwright)</h3>
+<table>
+  <tr><th>Test File</th><th>Coverage Area</th></tr>
+  <tr><td><code>admin-products.spec.ts</code></td><td>Admin product CRUD workflows</td></tr>
+  <tr><td><code>admin-species.spec.ts</code></td><td>Admin species management</td></tr>
+  <tr><td><code>admin-solutions.spec.ts</code></td><td>Admin solutions CRUD</td></tr>
+  <tr><td><code>admin-knowledge.spec.ts</code></td><td>Admin knowledge article CRUD</td></tr>
+  <tr><td><code>admin-research.spec.ts</code></td><td>Admin research article CRUD</td></tr>
+  <tr><td><code>admin-news-events.spec.ts</code></td><td>Admin news &amp; events CRUD</td></tr>
+  <tr><td><code>admin-blog.spec.ts</code></td><td>Admin blog post CRUD</td></tr>
+  <tr><td><code>admin-distributors.spec.ts</code></td><td>Admin distributor management</td></tr>
+  <tr><td><code>admin-users.spec.ts</code></td><td>Admin user management</td></tr>
+  <tr><td><code>distributor-inquiry.spec.ts</code></td><td>Distributor inquiry workflows</td></tr>
+  <tr><td><code>public-products.spec.ts</code></td><td>Public product catalogue and detail pages</td></tr>
+  <tr><td><code>public-content.spec.ts</code></td><td>Public content pages rendering</td></tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 15. PRE-LAUNCH CHECKLIST -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec15">15. Pre-Launch Checklist &amp; Placeholders</h2>
+
+<div class="warning">
+  <strong>⚠ Critical:</strong> The following items MUST be completed before production deployment.
+</div>
+
+<table>
+  <tr><th>#</th><th>Item</th><th>Location</th><th>Status</th><th>Priority</th></tr>
+  <tr>
+    <td>1</td>
+    <td>Replace company address placeholder</td>
+    <td><code>app/contact/page.tsx</code></td>
+    <td class="status-pending">Placeholder</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Replace phone number placeholder</td>
+    <td><code>app/contact/page.tsx</code></td>
+    <td class="status-pending">Placeholder</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Replace email address placeholder</td>
+    <td><code>app/contact/page.tsx</code></td>
+    <td class="status-pending">Placeholder</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Embed Google Maps iframe</td>
+    <td><code>app/contact/page.tsx</code></td>
+    <td class="status-pending">Placeholder</td>
+    <td class="priority-medium">MEDIUM</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Set <code>NEXT_PUBLIC_WHATSAPP_NUMBER</code> environment variable</td>
+    <td>Production environment</td>
+    <td class="status-pending">Placeholder</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Integrate CRM/Email provider in contact form</td>
+    <td><code>app/actions/contact.ts</code></td>
+    <td class="status-pending">Simulated</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>Re-enable Admin route authentication</td>
+    <td><code>auth.config.ts</code></td>
+    <td class="status-pending">Bypassed</td>
+    <td class="priority-high">CRITICAL</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>Re-enable Distributor route authentication</td>
+    <td><code>auth.config.ts</code></td>
+    <td class="status-pending">Bypassed</td>
+    <td class="priority-high">CRITICAL</td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td>Update root layout metadata (title, description)</td>
+    <td><code>app/layout.tsx</code></td>
+    <td class="status-pending">Default</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td>Add Privacy Policy and Terms of Service pages</td>
+    <td>New pages required</td>
+    <td class="status-pending">Missing</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>11</td>
+    <td>Switch database from SQLite to production PostgreSQL</td>
+    <td><code>prisma/schema.prisma</code>, <code>.env</code></td>
+    <td class="status-pending">Dev only</td>
+    <td class="priority-high">CRITICAL</td>
+  </tr>
+  <tr>
+    <td>12</td>
+    <td>Add sitemap.xml generation</td>
+    <td>New file required</td>
+    <td class="status-pending">Missing</td>
+    <td class="priority-medium">MEDIUM</td>
+  </tr>
+  <tr>
+    <td>13</td>
+    <td>Add robots.txt</td>
+    <td><code>public/robots.txt</code></td>
+    <td class="status-pending">Missing</td>
+    <td class="priority-medium">MEDIUM</td>
+  </tr>
+  <tr>
+    <td>14</td>
+    <td>Add Open Graph / social sharing metadata</td>
+    <td>All public pages</td>
+    <td class="status-pending">Missing</td>
+    <td class="priority-medium">MEDIUM</td>
+  </tr>
+  <tr>
+    <td>15</td>
+    <td>Replace hero image with actual brand photography</td>
+    <td><code>public/hero.png</code></td>
+    <td class="status-pending">Placeholder</td>
+    <td class="priority-medium">MEDIUM</td>
+  </tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 16. FUTURE ROADMAP -->
+<!-- ============================================ -->
+<h2 id="sec16">16. Future Roadmap</h2>
+
+<table>
+  <tr><th>Phase</th><th>Feature</th><th>Description</th><th>Priority</th></tr>
+  <tr>
+    <td>Phase 2</td>
+    <td>E-commerce / Order System</td>
+    <td>Allow distributors to place orders directly through the portal with cart, checkout, and order tracking.</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>Phase 2</td>
+    <td>Rich Text Editor</td>
+    <td>WYSIWYG editor (e.g., TipTap) for content creation in admin portal instead of raw text/HTML.</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>Phase 2</td>
+    <td>Image Upload</td>
+    <td>Direct image upload to Supabase Storage from admin forms instead of URL-based image references.</td>
+    <td class="priority-high">HIGH</td>
+  </tr>
+  <tr>
+    <td>Phase 2</td>
+    <td>Email Notifications</td>
+    <td>Automated email notifications for new inquiries, order updates, account approvals.</td>
+    <td class="priority-medium">MEDIUM</td>
+  </tr>
+  <tr>
+    <td>Phase 3</td>
+    <td>Multi-language Support</td>
+    <td>Hindi and regional language support for farmer accessibility (i18n).</td>
+    <td class="priority-medium">MEDIUM</td>
+  </tr>
+  <tr>
+    <td>Phase 3</td>
+    <td>Analytics Dashboard</td>
+    <td>Google Analytics integration and custom business analytics for admin.</td>
+    <td class="priority-medium">MEDIUM</td>
+  </tr>
+  <tr>
+    <td>Phase 3</td>
+    <td>Mobile App / PWA</td>
+    <td>Progressive Web App capabilities for offline access and mobile installation.</td>
+    <td class="priority-low">LOW</td>
+  </tr>
+  <tr>
+    <td>Phase 3</td>
+    <td>Inventory Management</td>
+    <td>Stock tracking, low-inventory alerts, and supply chain visibility.</td>
+    <td class="priority-low">LOW</td>
+  </tr>
+</table>
+
+<!-- ============================================ -->
+<!-- 17. APPENDIX -->
+<!-- ============================================ -->
+<div class="page-break"></div>
+<h2 id="sec17">17. Appendix: Environment Variables &amp; Configuration</h2>
+
+<h3>17.1 Environment Variables</h3>
+<table>
+  <tr><th>Variable</th><th>Purpose</th><th>Required</th></tr>
+  <tr><td><code>DATABASE_URL</code></td><td>Prisma database connection string (SQLite path for dev, PostgreSQL URL for prod)</td><td>Yes</td></tr>
+  <tr><td><code>AUTH_SECRET</code></td><td>NextAuth.js secret for JWT signing</td><td>Yes</td></tr>
+  <tr><td><code>AUTH_URL</code></td><td>Base URL for authentication callbacks</td><td>Yes (prod)</td></tr>
+  <tr><td><code>NEXT_PUBLIC_WHATSAPP_NUMBER</code></td><td>WhatsApp number for customer support integration</td><td>Yes (prod)</td></tr>
+  <tr><td><code>NEXT_PUBLIC_SUPABASE_URL</code></td><td>Supabase project URL</td><td>Yes (prod)</td></tr>
+  <tr><td><code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code></td><td>Supabase anonymous key for client-side access</td><td>Yes (prod)</td></tr>
+</table>
+
+<h3>17.2 Project Scripts</h3>
+<table>
+  <tr><th>Command</th><th>Purpose</th></tr>
+  <tr><td><code>npm run dev</code></td><td>Start Next.js development server</td></tr>
+  <tr><td><code>npm run build</code></td><td>Create production build</td></tr>
+  <tr><td><code>npm start</code></td><td>Start production server</td></tr>
+  <tr><td><code>npm run lint</code></td><td>Run ESLint code quality checks</td></tr>
+  <tr><td><code>npm test</code></td><td>Run Jest unit tests</td></tr>
+  <tr><td><code>npx prisma studio</code></td><td>Open Prisma database browser</td></tr>
+  <tr><td><code>npx prisma db push</code></td><td>Push schema changes to database</td></tr>
+  <tr><td><code>npx prisma generate</code></td><td>Regenerate Prisma client</td></tr>
+</table>
+
+<h3>17.3 File Structure Summary</h3>
+<pre style="background: #f5f5f5; padding: 12pt; border: 1pt solid #ddd; font-size: 9pt; line-height: 1.5;">
+vetkind-app/
+├── app/
+│   ├── (admin)/admin/          # Admin portal (10 modules)
+│   ├── (auth)/                 # Auth pages (login, register, reset)
+│   ├── (distributor)/          # Distributor portal (3 sections)
+│   ├── about/                  # About Us page
+│   ├── actions/                # 12 Server Action files
+│   ├── api/auth/               # NextAuth API routes
+│   ├── blog/                   # Blog listing + detail
+│   ├── contact/                # Contact page with form
+│   ├── distributor-inquiry/    # Public distributor application
+│   ├── knowledge/              # Knowledge Centre listing + detail
+│   ├── manufacturing/          # Manufacturing page
+│   ├── news-events/            # News &amp; Events listing + detail
+│   ├── products/               # Product catalogue + detail
+│   ├── quality/                # Quality Assurance page
+│   ├── research/               # Research Hub page
+│   ├── solutions/              # Solutions listing + detail
+│   ├── layout.tsx              # Root layout (header + footer)
+│   ├── page.tsx                # Homepage
+│   └── globals.css             # Global styles
+├── components/
+│   ├── admin/                  # 23 admin components (forms, tables, filters)
+│   ├── blog/                   # Blog components
+│   ├── contact/                # Contact form component
+│   ├── footer/                 # Footer component
+│   ├── forms/                  # Shared form components
+│   ├── homepage/               # Homepage-specific components
+│   ├── knowledge/              # Knowledge components
+│   ├── navigation/             # Header/navigation components
+│   ├── products/               # Product card, filters
+│   ├── research/               # Research components
+│   ├── solutions/              # Solution components
+│   └── ui/                     # Shared UI primitives (Button, DynamicIcon)
+├── lib/                        # Data access, utilities
+├── prisma/                     # Database schema &amp; migrations
+├── public/                     # Static assets
+├── types/                      # TypeScript type definitions
+├── __tests__/                  # Unit (Jest) &amp; E2E (Playwright) tests
+├── scripts/                    # Migration &amp; utility scripts
+└── supabase/                   # Supabase configuration
+</pre>
+
+<hr class="section-divider">
+
+<div style="text-align: center; margin-top: 40pt; color: #888; font-size: 10pt;">
+  <p><strong>VetKind India &mdash; Product Requirements Document v1.0</strong></p>
+  <p>Confidential &amp; Proprietary | August 2026</p>
+  <p>Prepared by GoTechSolutions</p>
+</div>
+
+</body>
+</html>

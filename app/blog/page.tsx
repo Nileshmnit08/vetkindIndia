@@ -26,7 +26,7 @@ export default async function BlogPage({
   const categories = filterOptionsResponse.success ? filterOptionsResponse.data?.categories || [] : [];
   const years = filterOptionsResponse.success ? filterOptionsResponse.data?.years || [] : [];
   
-  let featuredItem = null;
+  let featuredItem: any = null;
   let gridItems = items;
 
   // Only show featured item if no filters are active

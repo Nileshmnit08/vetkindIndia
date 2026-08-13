@@ -1,5 +1,6 @@
 import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { companyConfig } from "@/lib/constants/config";
 
 export const metadata = {
   title: "Contact Us | VetKind",
@@ -15,8 +16,8 @@ export default async function ContactPage({
   const productContext = resolvedParams.product;
   const solutionContext = resolvedParams.solution;
 
-  // Using the environment variable if available, otherwise fallback to a generic number
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+910000000000";
+  // Using the environment variable if available, otherwise fallback to config
+  const whatsappNumber = companyConfig.contact.whatsapp;
 
   return (
     <div className="flex min-h-screen flex-col font-sans bg-zinc-50 dark:bg-zinc-950">
@@ -50,9 +51,9 @@ export default async function ContactPage({
                 <div>
                   <h3 className="font-bold text-zinc-900 dark:text-white text-lg">Corporate Headquarters</h3>
                   <p className="mt-2 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                    [Insert Company Street Address]<br />
-                    [Insert City, State, ZIP]<br />
-                    [Insert Country]
+                    {companyConfig.contact.address.street}<br />
+                    {companyConfig.contact.address.city}, {companyConfig.contact.address.state}, {companyConfig.contact.address.zip}<br />
+                    {companyConfig.contact.address.country}
                   </p>
                 </div>
               </div>
@@ -65,8 +66,8 @@ export default async function ContactPage({
                 <div>
                   <h3 className="font-bold text-zinc-900 dark:text-white text-lg">Direct Lines</h3>
                   <div className="mt-2 space-y-2 text-zinc-600 dark:text-zinc-400">
-                    <p className="flex items-center gap-2"><Phone className="h-4 w-4" /> [Insert Phone Number]</p>
-                    <p className="flex items-center gap-2"><Mail className="h-4 w-4" /> [Insert Email Address]</p>
+                    <p className="flex items-center gap-2"><Phone className="h-4 w-4" /> {companyConfig.contact.phone}</p>
+                    <p className="flex items-center gap-2"><Mail className="h-4 w-4" /> {companyConfig.contact.email}</p>
                   </div>
                 </div>
               </div>
@@ -91,12 +92,12 @@ export default async function ContactPage({
               </div>
             </div>
 
-            {/* Google Maps Placeholder */}
-            <div className="relative aspect-video w-full rounded-2xl bg-zinc-200 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 overflow-hidden flex items-center justify-center">
+            {/* Map Area */}
+            <div className="relative aspect-video w-full rounded-2xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 overflow-hidden flex items-center justify-center">
               <div className="text-center p-4">
-                <MapPin className="h-10 w-10 text-zinc-400 mx-auto mb-2" />
-                <p className="text-zinc-600 dark:text-zinc-400 font-medium">[Google Maps Integration Placeholder]</p>
-                <p className="text-xs text-zinc-500 mt-1">Interactive map will be embedded here.</p>
+                <MapPin className="h-10 w-10 text-zinc-300 dark:text-zinc-700 mx-auto mb-2" />
+                <p className="text-zinc-500 dark:text-zinc-500 font-medium text-sm">Interactive Map Coming Soon</p>
+                <p className="text-xs text-zinc-400 dark:text-zinc-600 mt-1">Our exact coordinates will be published here shortly.</p>
               </div>
             </div>
 

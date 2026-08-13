@@ -1,3 +1,5 @@
+import { getResearchArticles } from "@/app/actions/research";
+import Link from "next/link";
 import { 
   FlaskConical, 
   Microscope, 
@@ -6,12 +8,12 @@ import {
   ThermometerSun,
   Activity,
   Map,
-  PawPrint
+  PawPrint,
+  ChevronRight,
+  FileSearch,
+  Calendar
 } from "lucide-react";
 import { StatCard } from "@/components/research/StatCard";
-import { TrialCard } from "@/components/research/TrialCard";
-import { TrialChart } from "@/components/research/TrialChart";
-import { ReferenceCard } from "@/components/research/ReferenceCard";
 import Script from "next/script";
 
 export const metadata = {
@@ -19,7 +21,15 @@ export const metadata = {
   description: "Discover the scientific foundation, field trials, and formulation process behind VetKind's phytogenic feed additives. Jaipur-based R&D with pan-India trials.",
 };
 
-export default function ResearchPage() {
+export default async function ResearchPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>
+}) {
+  const resolvedParams = await searchParams;
+  const articlesResponse = await getResearchArticles(undefined, undefined, "PUBLISHED");
+  const articles = articlesResponse.success ? articlesResponse.data || [] : [];
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -125,145 +135,69 @@ export default function ResearchPage() {
         </div>
       </section>
 
-      {/* Field Trials & Efficacy */}
+      {/* Published Research & Field Trials */}
       <section className="bg-white py-16 dark:bg-zinc-900 border-y border-zinc-200 dark:border-zinc-800 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="mb-12 text-center max-w-3xl mx-auto">
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
-              Field Trials & Efficacy
+              Published Research & Field Trials
             </h2>
             <p className="text-lg text-zinc-600 dark:text-zinc-400">
-              We believe that laboratory data must translate into real-world results. Here are highlights from our recent multi-species trials conducted across diverse Indian geographies.
+              We believe that laboratory data must translate into real-world results. Explore our recent multi-species trials conducted across diverse Indian geographies.
             </p>
           </div>
 
-          <TrialCard
-            title="Phytogenic Blend for Heat Stress in Lactating Crossbred Cows"
-            location="Rajasthan & Haryana"
-            duration="90-Day Summer Trial, 2025"
-            sampleSize="120 Holstein Crossbreds"
-            treatmentDesc="Cows were divided into two groups. The control group received a standard Total Mixed Ration (TMR). The treatment group received the same TMR supplemented with VetKind's proprietary cooling phytogenic blend (VK-HeatShield) at 50g/head/day during peak summer (THI > 80)."
-            outcomes={[
-              "11.4% higher average daily milk yield compared to control.",
-              "Significant reduction in panting score and rectal temperature.",
-              "Lowered Somatic Cell Count (SCC) by an average of 18%.",
-              "Maintained dry matter intake despite severe heat stress."
-            ]}
-            impact="By mitigating the physiological impact of heat stress, farmers can prevent the typical summer slump in milk production and maintain herd profitability during the hottest months."
-          >
-            <TrialChart />
-          </TrialCard>
-
-          <TrialCard
-            title="Rumen Support Additive in Buffalo"
-            location="Gujarat & Punjab"
-            duration="60-Day Trial, 2024"
-            sampleSize="80 Murrah Buffaloes"
-            treatmentDesc="A controlled study comparing standard concentrate feeding vs. concentrate supplemented with a live-yeast and essential oil blend targeting rumen microflora stabilization."
-            outcomes={[
-              "Improved dry matter intake by 8% within the first 14 days.",
-              "Milk fat percentage increased by 0.3 percentage points on average.",
-              "Improved Body Condition Score (BCS) retention during early lactation.",
-              "Reduced incidence of sub-acute ruminal acidosis (SARA)."
-            ]}
-            impact="Stabilizing the rumen environment directly improves fiber digestion, which is crucial for buffaloes fed on typical high-roughage Indian diets, leading to better milk fat and overall health."
-          >
-            <div className="w-full overflow-x-auto p-2">
-              <table className="w-full text-sm text-left text-zinc-600 dark:text-zinc-400">
-                <thead className="text-xs text-zinc-700 uppercase bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 rounded-tl-lg">Parameter</th>
-                    <th scope="col" className="px-6 py-3">Control</th>
-                    <th scope="col" className="px-6 py-3">Treatment</th>
-                    <th scope="col" className="px-6 py-3 rounded-tr-lg">Change</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="bg-white border-b dark:bg-zinc-900 dark:border-zinc-800">
-                    <th scope="row" className="px-6 py-4 font-medium text-zinc-900 dark:text-white">Dry Matter Intake (kg/d)</th>
-                    <td className="px-6 py-4">14.2</td>
-                    <td className="px-6 py-4">15.3</td>
-                    <td className="px-6 py-4 text-green-600 font-semibold">+7.7% *</td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-zinc-900 dark:border-zinc-800">
-                    <th scope="row" className="px-6 py-4 font-medium text-zinc-900 dark:text-white">Milk Fat (%)</th>
-                    <td className="px-6 py-4">6.8</td>
-                    <td className="px-6 py-4">7.1</td>
-                    <td className="px-6 py-4 text-green-600 font-semibold">+4.4% *</td>
-                  </tr>
-                  <tr className="bg-white dark:bg-zinc-900">
-                    <th scope="row" className="px-6 py-4 font-medium text-zinc-900 dark:text-white">Rumen pH (Avg)</th>
-                    <td className="px-6 py-4">5.9</td>
-                    <td className="px-6 py-4">6.2</td>
-                    <td className="px-6 py-4 text-green-600 font-semibold">+0.3 *</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p className="text-xs text-zinc-500 mt-2 px-2">* Statistically significant (p &lt; 0.05)</p>
+          {articles.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center rounded-3xl border border-dashed border-zinc-300 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/50">
+              <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-zinc-100 text-zinc-400 dark:bg-zinc-800">
+                <FileSearch className="h-10 w-10" />
+              </div>
+              <h2 className="mb-2 text-2xl font-bold text-zinc-900 dark:text-white">
+                No research articles published yet
+              </h2>
+              <p className="max-w-md text-zinc-500 dark:text-zinc-400">
+                Our R&D team is constantly working on new trials and formulations. Check back soon for our latest findings.
+              </p>
             </div>
-          </TrialCard>
-
-          <TrialCard
-            title="Gut Health & Immunity Support in Broilers"
-            location="Maharashtra & Tamil Nadu"
-            duration="42-Day Cycle, 2025"
-            sampleSize="5,000 Broilers"
-            treatmentDesc="Evaluation of an oregano and thyme essential oil blend as a natural alternative to antibiotic growth promoters (AGPs). Birds were raised in standard open-sided commercial sheds."
-            outcomes={[
-              "Feed Conversion Ratio (FCR) improved from 1.62 (control) to 1.55 (treatment).",
-              "Overall flock mortality reduced by 1.2%.",
-              "Higher average final body weight (+85g per bird).",
-              "Improved intestinal villi length to crypt depth ratio."
-            ]}
-            impact="Demonstrates that phytogenic solutions can effectively support gut integrity and immune response, maximizing growth performance without reliance on AGPs in typical Indian poultry systems."
-          />
-
-        </div>
-      </section>
-
-      {/* Scientific References */}
-      <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
-        <div className="mb-12 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
-            Scientific References & Publications
-          </h2>
-          <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-            Our active ingredients and formulation strategies are grounded in peer-reviewed scientific literature.
-          </p>
-        </div>
-
-        <div className="mx-auto max-w-4xl grid gap-4">
-          <ReferenceCard 
-            title="Efficacy of Phytogenic Feed Additives in Mitigating Heat Stress in Dairy Cows"
-            authors="Kumar, R., & Singh, M."
-            journal="Journal of Animal Science and Technology"
-            year="2023"
-            doi="https://doi.org/10.1186/placeholder-1"
-            summary="Demonstrates that specific botanical extracts significantly lower cortisol levels and respiratory rates in heat-stressed lactating cows, aligning with our summer-formulated blends."
-          />
-          <ReferenceCard 
-            title="Modulation of Rumen Fermentation by Essential Oils in Water Buffaloes"
-            authors="Patel, H., et al."
-            journal="Veterinary Nutrition Quarterly"
-            year="2022"
-            doi="https://doi.org/10.1186/placeholder-2"
-            summary="Highlights the role of phenolic compounds in stabilizing rumen pH and enhancing fiber degradation, supporting our buffalo-specific rumen modifiers."
-          />
-          <ReferenceCard 
-            title="Oregano Essential Oil as a Natural Alternative to Antibiotic Growth Promoters in Broilers"
-            authors="Deshmukh, A., & Sharma, V."
-            journal="Poultry Science International"
-            year="2024"
-            doi="https://doi.org/10.1186/placeholder-3"
-            summary="Provides clinical evidence that thymol and carvacrol improve gut morphometry and feed conversion ratios in commercial broiler flocks."
-          />
-          <ReferenceCard 
-            title="Impact of Chelated Trace Minerals on Somatic Cell Count and Mastitis Incidence"
-            authors="Gupta, S., et al."
-            journal="Indian Journal of Veterinary Medicine"
-            year="2021"
-            summary="Confirms that organic zinc and selenium supplementation enhances udder immunity, directly informing our transition cow formulations."
-          />
+          ) : (
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {articles.map((article: any) => (
+                <Link key={article.id} href={`/research/${article.slug}`} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-zinc-200 transition-all hover:-translate-y-1 hover:shadow-xl dark:bg-zinc-900 dark:border-zinc-800">
+                  <div className="relative aspect-video bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                    {article.coverImage ? (
+                      <img src={article.coverImage} alt={article.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-zinc-100 text-zinc-300 dark:bg-zinc-800 dark:text-zinc-700">
+                        <Microscope className="h-10 w-10" />
+                      </div>
+                    )}
+                    {article.category && (
+                      <div className="absolute top-4 left-4 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-xs font-bold text-zinc-900 shadow-sm dark:bg-zinc-900/90 dark:text-zinc-100">
+                        {article.category}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="mb-3 text-xl font-bold text-zinc-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors line-clamp-2">
+                      {article.title}
+                    </h3>
+                    <p className="mb-6 flex-1 text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-zinc-500 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5" />
+                        {new Date(article.publishedAt || article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </span>
+                      <span className="flex items-center font-semibold text-green-600 dark:text-green-400">
+                        Read <ChevronRight className="ml-0.5 h-3.5 w-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

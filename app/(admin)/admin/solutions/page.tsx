@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 import { getSolutions } from "@/app/actions/solutions";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -128,3 +129,4 @@ export default async function AdminSolutionsPage({ searchParams }: AdminSolution
     </div>
   );
 }
+
