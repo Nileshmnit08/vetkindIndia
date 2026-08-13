@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/footer/Footer";
+import { FloatingCustomerCare } from "@/components/ui/FloatingCustomerCare";
 import { auth } from "@/auth";
 import { getFilterOptions } from "@/lib/products";
 const geistSans = Geist({
@@ -37,6 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
         </main>
         <Footer species={species} />
+        <FloatingCustomerCare />
       </body>
     </html>
   );
