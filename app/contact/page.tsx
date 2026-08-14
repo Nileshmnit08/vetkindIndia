@@ -16,8 +16,11 @@ export default async function ContactPage({
   const productContext = resolvedParams.product;
   const solutionContext = resolvedParams.solution;
 
-  // Using the environment variable if available, otherwise fallback to config
-  const whatsappNumber = companyConfig.contact.whatsapp;
+  const { getSiteSettings } = await import("@/app/actions/settings");
+  const siteSettings = await getSiteSettings();
+
+  const whatsappNumber = siteSettings?.whatsapp_number || companyConfig.contact.whatsapp;
+  const whatsappEnabled = siteSettings?.whatsapp_enabled ?? true;
 
   return (
     <div className="flex min-h-screen flex-col font-sans bg-zinc-50 dark:bg-zinc-950">
@@ -73,23 +76,25 @@ export default async function ContactPage({
               </div>
 
               {/* WhatsApp Call to Action */}
-              <div className="flex gap-4 items-center rounded-2xl bg-green-50 p-6 border border-green-200 dark:bg-green-900/20 dark:border-green-900/50">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green-500 text-white shadow-sm">
-                  <MessageCircle className="h-6 w-6" />
+              {whatsappEnabled && (
+                <div className="flex gap-4 items-center rounded-2xl bg-green-50 p-6 border border-green-200 dark:bg-green-900/20 dark:border-green-900/50">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green-500 text-white shadow-sm">
+                    <MessageCircle className="h-6 w-6" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-green-950 dark:text-green-50 text-lg">Instant Support</h3>
+                    <p className="text-sm text-green-800 dark:text-green-300">Chat with an expert on WhatsApp</p>
+                  </div>
+                  <a 
+                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(siteSettings?.whatsapp_message || 'Hello! I would like to know more about VetKind solutions.')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full bg-green-600 px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-green-700"
+                  >
+                    Message
+                  </a>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-green-950 dark:text-green-50 text-lg">Instant Support</h3>
-                  <p className="text-sm text-green-800 dark:text-green-300">Chat with an expert on WhatsApp</p>
-                </div>
-                <a 
-                  href={`https://wa.me/${whatsappNumber}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-green-600 px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-green-700"
-                >
-                  Message
-                </a>
-              </div>
+              )}
             </div>
 
             {/* Map Area */}

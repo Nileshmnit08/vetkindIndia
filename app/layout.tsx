@@ -5,6 +5,7 @@ import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/footer/Footer";
 import { FloatingCustomerCare } from "@/components/ui/FloatingCustomerCare";
 import { auth } from "@/auth";
+import { getSiteSettings } from "@/app/actions/settings";
 import { getFilterOptions } from "@/lib/products";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +27,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const isLoggedIn = !!session?.user;
   const userRole = session?.user?.role;
   const { species } = await getFilterOptions();
+  
+  // Fetch site settings
+  const siteSettings = await getSiteSettings();
+  const whatsappNumber = siteSettings?.whatsapp_number;
+  const whatsappMessage = siteSettings?.whatsapp_message;
+  const whatsappEnabled = siteSettings?.whatsapp_enabled;
 
   return (
     <html
@@ -38,7 +45,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
         </main>
         <Footer species={species} />
-        <FloatingCustomerCare />
+        <FloatingCustomerCare 
+          whatsappNumber={whatsappNumber}
+          whatsappMessage={whatsappMessage}
+          whatsappEnabled={whatsappEnabled}
+        />
       </body>
     </html>
   );

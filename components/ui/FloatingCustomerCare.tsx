@@ -2,14 +2,21 @@
 
 import { useState } from "react";
 
-export function FloatingCustomerCare() {
+export function FloatingCustomerCare({
+  whatsappNumber = "1234567890",
+  whatsappMessage = "Hello! I would like to know more about VetKind solutions.",
+  whatsappEnabled = true
+}: {
+  whatsappNumber?: string;
+  whatsappMessage?: string;
+  whatsappEnabled?: boolean;
+}) {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Replace this with the actual VetKind WhatsApp number, including the country code (no '+' or '00')
-  // Example: '1234567890' for +1 (234) 567-890
-  const whatsappNumber = "1234567890";
-  const whatsappMessage = encodeURIComponent("Hello! I would like to know more about VetKind solutions.");
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+  if (!whatsappEnabled) return null;
+
+  const encodedMessage = encodeURIComponent(whatsappMessage);
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
   return (
     <a

@@ -1,9 +1,8 @@
 "use server";
 
 export async function submitContactForm(formData: FormData) {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
+  // Remove simulate network delay
+  
   // Extract fields
   const data = {
     firstName: formData.get("firstName") as string,
@@ -26,13 +25,54 @@ export async function submitContactForm(formData: FormData) {
     return { success: false, error: "Please fill out all required fields and provide consent." };
   }
 
-  // Safely log in development
-  if (process.env.NODE_ENV === "development") {
-    console.log("[DEV] Contact form submitted:", data);
+  try {
+    const { createServerClient } = await import("@/lib/supabase/client");
+    const supabase = createServerClient();
+    
+    // Parse location for city/state if possible
+    let city = null;
+    let state = null;
+    if (data.location) {
+      const parts = data.location.split(',').map(p => p.trim());
+      if (parts.length > 1) {
+        city = parts[0];
+        state = parts[1];
+      } else {
+        city = data.location;
+      }
+    }
+
+    const formattedMessage = `
+Animal Type: ${data.animalType || '-'}
+Herd Size: ${data.herdSize || '-'}
+
+Message:
+${data.message}
+    `.trim();
+
+    const { error } = await supabase.from('inquiries').insert({
+      name: `${data.firstName} ${data.lastName}`.trim(),
+      email: data.email,
+      phone: data.phone,
+      company: data.farmName || null,
+      message: formattedMessage,
+      inquiry_type: data.inquiryType || 'general',
+      product_interest: data.product || data.solution || null,
+      city,
+      state,
+      source: 'contact_form',
+      priority: 'Medium',
+      status: 'NEW'
+    });
+
+    if (error) {
+      console.error("Database error saving contact form:", error);
+      return { success: false, error: "Failed to save inquiry. Please try again." };
+    }
+
+    return { success: true };
+  } catch (err) {
+    console.error("Unexpected error saving contact form:", err);
+    return { success: false, error: "An unexpected error occurred. Please try again." };
   }
-
-  // TODO: Add CRM/Email provider integration here (e.g. SendGrid, HubSpot)
-  // For now, we just return success in development
-
-  return { success: true };
 }

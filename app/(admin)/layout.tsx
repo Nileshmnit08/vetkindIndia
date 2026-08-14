@@ -96,6 +96,21 @@ export default async function AdminLayout({
               </Link>
             ))}
           </nav>
+          <div className="px-4 mt-8 mb-2">
+            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider dark:text-zinc-400">Settings</h3>
+          </div>
+          <nav className="flex-1 space-y-1 px-4 text-sm pb-4">
+            <Link
+              href="/admin/settings/contact"
+              className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+            >
+              <MessageSquare
+                className="mr-3 h-5 w-5 flex-shrink-0 text-zinc-400 group-hover:text-green-600 dark:group-hover:text-green-500"
+                aria-hidden="true"
+              />
+              Contact Settings
+            </Link>
+          </nav>
         </div>
         
         <div className="border-t border-zinc-200 p-4 dark:border-zinc-800">
