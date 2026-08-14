@@ -22,7 +22,7 @@ export async function getSiteSettings() {
       return null;
     }
     
-    return data || null;
+    return (data as any) || null;
   } catch (error) {
     console.error("Error in getSiteSettings:", error);
     return null;
@@ -62,7 +62,7 @@ export async function updateSiteSettings(formData: FormData) {
         whatsapp_enabled: whatsappEnabled,
         updated_by: session.user.id,
         updated_at: new Date().toISOString()
-      });
+      } as any);
 
     if (error) {
       console.error("Supabase error updating settings:", {

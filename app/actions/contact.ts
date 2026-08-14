@@ -50,7 +50,7 @@ Message:
 ${data.message}
     `.trim();
 
-    const { error } = await supabase.from('inquiries').insert({
+    const { error } = await ((supabase as any).from('inquiries')).insert({
       name: `${data.firstName} ${data.lastName}`.trim(),
       email: data.email,
       phone: data.phone,

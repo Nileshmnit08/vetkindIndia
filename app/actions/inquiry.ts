@@ -24,7 +24,7 @@ export async function submitDistributorInquiry(formData: FormData) {
     }
 
     // Prevent duplicate pending inquiries from the same user or email
-    let query = supabase.from('inquiries').select('id').eq('status', 'NEW');
+    let query = (supabase as any).from('inquiries').select('id').eq('status', 'NEW');
     
     if (userId) {
       query = query.or(`email.eq.${email},user_id.eq.${userId}`);
@@ -59,7 +59,7 @@ Message:
 ${userMessage || 'No additional message'}
     `.trim();
 
-    const { error } = await supabase.from('inquiries').insert({
+    const { error } = await ((supabase as any).from('inquiries')).insert({
       name,
       company,
       email,
@@ -101,7 +101,7 @@ export async function getInquiries(params?: {
     throw new Error("Unauthorized");
   }
 
-  let query = supabase.from('inquiries').select('*, assigned_to:users!inquiries_assigned_to_fkey(name)', { count: 'exact' });
+  let query = (supabase as any).from('inquiries').select('*, assigned_to:users!inquiries_assigned_to_fkey(name)', { count: 'exact' });
 
   if (params?.status && params.status !== 'ALL') {
     query = query.eq('status', params.status);
@@ -148,7 +148,7 @@ export async function getInquiries(params?: {
     };
   }
 
-  return { success: true, inquiries: data || [], count: count || 0 };
+  return { success: true, inquiries: (data || []) as any[], count: count || 0 };
 }
 
 export async function getInquiryById(id: string) {
@@ -199,7 +199,7 @@ export async function getAdminUsers() {
 
 // Reusable activity logger
 async function logActivity(inquiryId: string, userId: string, type: string, content?: string, oldVal?: string, newVal?: string) {
-  await supabase.from('inquiry_activities').insert({
+  await ((supabase as any).from('inquiry_activities') as any).insert({
     inquiry_id: inquiryId,
     user_id: userId,
     activity_type: type,
@@ -214,12 +214,12 @@ export async function updateInquiryStatus(id: string, newStatus: string) {
   if (!session?.user || session.user.role !== "ADMIN") return { success: false, error: "Unauthorized" };
 
   // Fetch current
-  const { data: current } = await supabase.from('inquiries').select('status').eq('id', id).single();
+  const { data: current }: { data: any } = await (supabase as any).from('inquiries').select('status').eq('id', id).single();
   if (!current) return { success: false, error: "Not found" };
 
   if (current.status === newStatus) return { success: true }; // No change
 
-  const { error } = await supabase.from('inquiries')
+  const { error } = await (supabase as any).from('inquiries')
     .update({ status: newStatus, updated_by: session.user.id })
     .eq('id', id);
 
@@ -239,13 +239,13 @@ export async function updateInquiryStatusWithNotification(
   if (!session?.user || session.user.role !== "ADMIN") return { success: false, error: "Unauthorized" };
 
   // Fetch current
-  const { data: current } = await supabase.from('inquiries').select('status, name, phone, company').eq('id', id).single();
+  const { data: current }: { data: any } = await (supabase as any).from('inquiries').select('status, name, phone, company').eq('id', id).single();
   if (!current) return { success: false, error: "Not found" };
 
   if (current.status === newStatus && !notify) return { success: true };
 
   // Update status in DB
-  const { error } = await supabase.from('inquiries')
+  const { error } = await ((supabase as any).from('inquiries'))
     .update({ status: newStatus, updated_by: session.user.id })
     .eq('id', id);
 
@@ -270,7 +270,7 @@ export async function updateInquiryStatusWithNotification(
     const result = await whatsappService.sendMessage(current.phone, message);
 
     // Log the notification attempt
-    await supabase.from('whatsapp_notification_logs').insert({
+    await ((supabase as any).from('whatsapp_notification_logs') as any).insert({
       inquiry_id: id,
       phone: current.phone,
       template_key: newStatus,
@@ -282,7 +282,7 @@ export async function updateInquiryStatusWithNotification(
     });
 
     // Update the inquiry with the latest whatsapp status
-    await supabase.from('inquiries').update({
+    await ((supabase as any).from('inquiries')).update({
       last_whatsapp_notification_at: new Date().toISOString(),
       last_whatsapp_notification_status: result.success ? 'DELIVERED' : 'FAILED',
       last_whatsapp_message_id: result.messageId || null,
@@ -309,13 +309,13 @@ export async function assignInquiry(id: string, assignedToId: string | null) {
   const session = await auth();
   if (!session?.user || session.user.role !== "ADMIN") return { success: false, error: "Unauthorized" };
 
-  const { error } = await supabase.from('inquiries')
+  const { error } = await ((supabase as any).from('inquiries'))
     .update({ assigned_to: assignedToId, updated_by: session.user.id })
     .eq('id', id);
 
   if (error) return { success: false, error: error.message };
 
-  await logActivity(id, session.user.id, 'ASSIGNMENT', `Assigned inquiry to user`, null, assignedToId || 'Unassigned');
+  await logActivity(id, session.user.id, 'ASSIGNMENT', `Assigned inquiry to user`, undefined, assignedToId || 'Unassigned');
   return { success: true };
 }
 
@@ -326,7 +326,7 @@ export async function addInquiryNote(id: string, content: string) {
   await logActivity(id, session.user.id, 'NOTE', content);
   
   // Update last contacted optionally
-  await supabase.from('inquiries').update({ updated_by: session.user.id }).eq('id', id);
+  await ((supabase as any).from('inquiries')).update({ updated_by: session.user.id }).eq('id', id);
 
   return { success: true };
 }
@@ -335,7 +335,7 @@ export async function markInquirySpam(id: string) {
   const session = await auth();
   if (!session?.user || session.user.role !== "ADMIN") return { success: false, error: "Unauthorized" };
 
-  const { error } = await supabase.from('inquiries')
+  const { error } = await ((supabase as any).from('inquiries'))
     .update({ status: 'Spam', is_spam: true, updated_by: session.user.id })
     .eq('id', id);
 
