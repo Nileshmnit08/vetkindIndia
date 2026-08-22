@@ -255,7 +255,7 @@ VALUES (
   'admin-001',
   'Admin User',
   'admin@vetkind.com',
-  '$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36HQjK2QleS0nW1wrK2aWJu',
+  '$2b$10$Zilw9r.WkfZqqm54xjnZDu3PyrtBj5CY3oMjUJ8.hS/hnHRxRYvdK',
   'ADMIN',
   'ACTIVE'
 ) ON CONFLICT (email) DO UPDATE SET
@@ -272,7 +272,7 @@ VALUES (
   'dist-001',
   'John Distributor',
   'distributor@vetkind.com',
-  '$2a$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u',
+  '$2b$10$.iME8G9FkWDQY/QtLLhXO.KffjJss6Piljd/UuDXTwkD1jGcH2bbq',
   'DISTRIBUTOR',
   'ACTIVE'
 ) ON CONFLICT (email) DO UPDATE SET
