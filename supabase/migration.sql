@@ -209,16 +209,37 @@ ALTER TABLE research_articles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE news_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE blog_articles ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow all operations" ON users;
 CREATE POLICY "Allow all operations" ON users FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON distributor_profiles;
 CREATE POLICY "Allow all operations" ON distributor_profiles FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON species;
 CREATE POLICY "Allow all operations" ON species FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON products;
 CREATE POLICY "Allow all operations" ON products FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON product_resources;
 CREATE POLICY "Allow all operations" ON product_resources FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON inquiries;
 CREATE POLICY "Allow all operations" ON inquiries FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON solutions_admin;
 CREATE POLICY "Allow all operations" ON solutions_admin FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON knowledge_articles;
 CREATE POLICY "Allow all operations" ON knowledge_articles FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON research_articles;
 CREATE POLICY "Allow all operations" ON research_articles FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON news_events;
 CREATE POLICY "Allow all operations" ON news_events FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON blog_articles;
 CREATE POLICY "Allow all operations" ON blog_articles FOR ALL USING (true) WITH CHECK (true);
 
 -- ============================================
@@ -233,16 +254,37 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+DROP TRIGGER IF EXISTS update_users_updated_at ON users;
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_distributor_profiles_updated_at ON distributor_profiles;
 CREATE TRIGGER update_distributor_profiles_updated_at BEFORE UPDATE ON distributor_profiles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_species_updated_at ON species;
 CREATE TRIGGER update_species_updated_at BEFORE UPDATE ON species FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_products_updated_at ON products;
 CREATE TRIGGER update_products_updated_at BEFORE UPDATE ON products FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_product_resources_updated_at ON product_resources;
 CREATE TRIGGER update_product_resources_updated_at BEFORE UPDATE ON product_resources FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_inquiries_updated_at ON inquiries;
 CREATE TRIGGER update_inquiries_updated_at BEFORE UPDATE ON inquiries FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_solutions_admin_updated_at ON solutions_admin;
 CREATE TRIGGER update_solutions_admin_updated_at BEFORE UPDATE ON solutions_admin FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_knowledge_articles_updated_at ON knowledge_articles;
 CREATE TRIGGER update_knowledge_articles_updated_at BEFORE UPDATE ON knowledge_articles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_research_articles_updated_at ON research_articles;
 CREATE TRIGGER update_research_articles_updated_at BEFORE UPDATE ON research_articles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_news_events_updated_at ON news_events;
 CREATE TRIGGER update_news_events_updated_at BEFORE UPDATE ON news_events FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_blog_articles_updated_at ON blog_articles;
 CREATE TRIGGER update_blog_articles_updated_at BEFORE UPDATE ON blog_articles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================
