@@ -6,6 +6,7 @@ import { ChevronRight, ShieldCheck, MessageCircle, Phone, Star } from "lucide-re
 import { ProductGallery } from "@/components/products/ProductGallery";
 import { ProductTabs } from "@/components/products/ProductTabs";
 import { RelatedProducts } from "@/components/products/RelatedProducts";
+import { VariantSelector } from "@/components/products/VariantSelector";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -133,28 +134,8 @@ export default async function ProductDetailPage({
                 {product.shortDescription}
               </p>
 
-              {/* Price & Pack Sizes */}
-              <div className="mb-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
-                <div className="flex items-end gap-4 mb-4">
-                  <span className="text-4xl font-bold text-zinc-900 dark:text-white">
-                    {product.price != null ? formatPrice(product.price) : ""}
-                  </span>
-                  <span className="text-sm font-medium text-zinc-500 mb-1">
-                    MRP (Inclusive of all taxes)
-                  </span>
-                </div>
-
-                {product.packSize && (
-                  <div>
-                    <h4 className="mb-3 text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">Available Pack Size</h4>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="rounded-lg border border-zinc-200 bg-white px-4 py-2 font-medium text-zinc-700 shadow-sm dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-300">
-                        {product.packSize}
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              {/* Price & Variant Selection */}
+              <VariantSelector product={product} />
 
               {/* Action Buttons */}
               <div className="mb-10 flex flex-col gap-3 sm:flex-row">

@@ -6,6 +6,7 @@ export type SpeciesRow = any;
 
 export type ProductWithRelations = ProductRow & {
   species: SpeciesRow | null;
+  variants?: any[];
 };
 
 export interface FetchProductsOptions {
@@ -23,7 +24,7 @@ export interface FetchProductsOptions {
 export async function getProducts(options: FetchProductsOptions = {}): Promise<{ data: ProductWithRelations[], count: number }> {
   let query = supabase
     .from('products')
-    .select('*, species:species_id(*)', { count: 'exact' })
+    .select('*, species:species_id(*), variants:product_variants(*, inventory:inventory_levels(on_hand, reserved))', { count: 'exact' })
     .eq('published', true) as any;
 
   if (options.search) {
@@ -82,11 +83,29 @@ export async function getProducts(options: FetchProductsOptions = {}): Promise<{
     ? (rawProducts || []).filter((p: any) => p.species) 
     : (rawProducts || []);
 
-  const mappedProducts = products.map((p: any) => ({
-    ...p,
-    productType: p.product_type,
-    createdAt: new Date(p.created_at)
-  }));
+  const mappedProducts = products.map((p: any) => {
+    let startingPrice: number | null = null;
+    const mappedVariants = (p.variants || []).map((v: any) => {
+      const onHand = v.inventory?.[0]?.on_hand || 0;
+      const reserved = v.inventory?.[0]?.reserved || 0;
+      const isAvailable = (onHand - reserved) > 0;
+      
+      if (v.is_active && (startingPrice === null || v.price < startingPrice)) {
+        startingPrice = v.price;
+      }
+      
+      const { inventory, ...safeVariant } = v;
+      return { ...safeVariant, isAvailable };
+    });
+
+    return {
+      ...p,
+      productType: p.product_type,
+      createdAt: new Date(p.created_at),
+      variants: mappedVariants,
+      startingPrice: startingPrice !== null ? startingPrice : null
+    };
+  });
 
   return { data: mappedProducts as any, count: count || 0 };
 }
@@ -94,16 +113,32 @@ export async function getProducts(options: FetchProductsOptions = {}): Promise<{
 export async function getProductBySlug(slug: string): Promise<ProductWithRelations | null> {
   const { data: product } = await supabase
     .from('products')
-    .select('*, species:species_id(*)')
+    .select('*, species:species_id(*), variants:product_variants(*, inventory:inventory_levels(on_hand, reserved))')
     .eq('slug', slug)
     .single() as any;
 
   if (!product || !product.published) return null;
 
+  let startingPrice: number | null = null;
+  const mappedVariants = (product.variants || []).map((v: any) => {
+    const onHand = v.inventory?.[0]?.on_hand || 0;
+    const reserved = v.inventory?.[0]?.reserved || 0;
+    const isAvailable = (onHand - reserved) > 0;
+    
+    if (v.is_active && (startingPrice === null || v.price < startingPrice)) {
+      startingPrice = v.price;
+    }
+    
+    const { inventory, ...safeVariant } = v;
+    return { ...safeVariant, isAvailable };
+  });
+
   return {
     ...product,
     productType: product.product_type,
-    createdAt: new Date(product.created_at)
+    createdAt: new Date(product.created_at),
+    variants: mappedVariants,
+    startingPrice: startingPrice !== null ? startingPrice : null
   } as any;
 }
 

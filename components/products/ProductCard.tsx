@@ -7,6 +7,13 @@ import { formatPrice } from "@/lib/utils";
 export function ProductCard({ product }: { product: ProductWithRelations }) {
   // Use the primary image if available, else fallback
   const primaryImage = product.image || "/product-mockup.png";
+  
+  const activeVariants = (product.variants || []).filter((v: any) => v.is_active);
+  const displayPrice = product.startingPrice !== null ? (product.startingPrice / 100) : product.price;
+  const hasVariants = activeVariants.length > 0;
+  const packSizeDisplay = hasVariants 
+    ? `${activeVariants.length} Size${activeVariants.length > 1 ? 's' : ''} Available` 
+    : (product.packSize || "");
 
   return (
     <Link href={`/products/${product.slug}`} className="group flex flex-col rounded-2xl border border-zinc-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950 overflow-hidden">
@@ -33,7 +40,7 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
             {product.category || "General"}
           </span>
           <span className="text-xs text-zinc-500 dark:text-zinc-400">
-            {product.packSize || ""}
+            {packSizeDisplay}
           </span>
         </div>
         
@@ -46,8 +53,9 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
         </p>
         
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
-           <span className="font-bold text-zinc-900 dark:text-zinc-100">
-             {product.price != null ? formatPrice(product.price) : ""}
+           <span className="font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1">
+             {hasVariants && <span className="text-xs font-normal text-zinc-500 mr-1">From</span>}
+             {displayPrice != null ? formatPrice(displayPrice) : "Price Unavailable"}
            </span>
            <span className="text-sm font-medium text-green-600 group-hover:text-green-700 dark:text-green-400 dark:group-hover:text-green-300 transition-colors">
              View Details &rarr;
