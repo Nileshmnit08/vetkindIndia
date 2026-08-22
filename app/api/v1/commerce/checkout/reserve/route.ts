@@ -2,13 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase/client';
 
+interface MinimalCart {
+  id: string;
+}
+
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const supabase = createServerClient();
+  const supabase = createServerClient() as any;
   const userId = session.user.id;
 
   // 1. Get user cart
@@ -16,7 +20,7 @@ export async function POST(request: NextRequest) {
     .from('carts')
     .select('id')
     .eq('user_id', userId)
-    .single();
+    .single() as { data: MinimalCart | null };
     
   if (!cart) {
     return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });

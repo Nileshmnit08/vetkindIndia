@@ -3,6 +3,12 @@ import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase/client';
 import Razorpay from 'razorpay';
 
+interface CommerceOrder {
+  id: string;
+  total_amount: number;
+  status: string;
+}
+
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user) {
@@ -14,7 +20,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
   }
 
-  const supabase = createServerClient();
+  const supabase = createServerClient() as any;
 
   // 1. Validate the order belongs to the user and is PENDING
   const { data: order } = await supabase
@@ -23,7 +29,7 @@ export async function POST(request: NextRequest) {
     .eq('id', order_id)
     .eq('user_id', session.user.id)
     .eq('status', 'PENDING')
-    .single();
+    .single() as { data: CommerceOrder | null };
 
   if (!order) {
     return NextResponse.json({ error: 'Invalid or expired order context' }, { status: 400 });

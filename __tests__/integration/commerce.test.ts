@@ -1,6 +1,7 @@
 import { createAuthenticatedClient, createAdminClient, createMockRequest, mockAuthSession } from '../utils/test-client';
 import { POST as InitiateCheckout } from '@/app/api/v1/commerce/checkout/initiate/route';
 import { POST as Webhook } from '@/app/api/v1/commerce/checkout/gateway/razorpay/webhook/route';
+import { NextRequest } from 'next/server';
 import crypto from 'crypto';
 
 // Fixed identities from seed.sql
@@ -47,8 +48,8 @@ describe('Commerce Matrix Integration Suite', () => {
       
       expect(error).toBeNull();
       const { data: items } = await clientA.from('cart_items').select('*').eq('cart_id', cart.id);
-      expect(items).toHaveLength(1);
-      expect(items[0].quantity).toBe(2);
+      expect(items!).toHaveLength(1);
+      expect(items![0].quantity).toBe(2);
     });
 
     it('Customer A reads Customer B data -> Denied (RLS)', async () => {
@@ -57,7 +58,7 @@ describe('Commerce Matrix Integration Suite', () => {
 
       // Client A attempts to read Client B's cart items
       const { data: items } = await clientA.from('cart_items').select('*').eq('cart_id', cartB.id);
-      expect(items).toHaveLength(0); // RLS prevents visibility
+      expect(items!).toHaveLength(0); // RLS prevents visibility
     });
   });
 
@@ -88,9 +89,9 @@ describe('Commerce Matrix Integration Suite', () => {
       expect(res.status).toBe(200);
       
       const { data: order } = await clientA.from('orders').select('*').eq('id', json.order_id).single();
-      expect(order.cgst_amount).toBeGreaterThan(0);
-      expect(order.sgst_amount).toBeGreaterThan(0);
-      expect(order.igst_amount).toBe(0);
+      expect(order!.cgst_amount).toBeGreaterThan(0);
+      expect(order!.sgst_amount).toBeGreaterThan(0);
+      expect(order!.igst_amount).toBe(0);
     });
 
     it('Inter-state (Haryana -> Maharashtra) -> IGST', async () => {
@@ -109,9 +110,9 @@ describe('Commerce Matrix Integration Suite', () => {
       expect(res.status).toBe(200);
       
       const { data: order } = await clientB.from('orders').select('*').eq('id', json.order_id).single();
-      expect(order.cgst_amount).toBe(0);
-      expect(order.sgst_amount).toBe(0);
-      expect(order.igst_amount).toBeGreaterThan(0);
+      expect(order!.cgst_amount).toBe(0);
+      expect(order!.sgst_amount).toBe(0);
+      expect(order!.igst_amount).toBeGreaterThan(0);
     });
   });
 
@@ -145,7 +146,7 @@ describe('Commerce Matrix Integration Suite', () => {
       
       expect(successes).toHaveLength(1);
       expect(failures).toHaveLength(1);
-      expect(failures[0].error.message).toMatch(/Insufficient inventory/);
+      expect(failures[0].error!.message).toMatch(/Insufficient inventory/);
     });
 
     it('Duplicate webhook -> No duplicate business effect', async () => {

@@ -2,13 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase/client';
 
+interface CommerceCart {
+  id: string;
+  user_id?: string;
+  cart_items?: any[];
+}
+
+interface MinimalCart {
+  id: string;
+}
+
 export async function GET(request: NextRequest) {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const supabase = createServerClient();
+  const supabase = createServerClient() as any;
   const userId = session.user.id;
 
   const { data: cart, error: cartError } = await supabase
@@ -32,7 +42,7 @@ export async function GET(request: NextRequest) {
       )
     `)
     .eq('user_id', userId)
-    .single();
+    .single() as { data: CommerceCart | null, error: any };
 
   if (cartError && cartError.code !== 'PGRST116') {
     return NextResponse.json({ error: 'Failed to fetch cart' }, { status: 500 });
@@ -43,7 +53,7 @@ export async function GET(request: NextRequest) {
   }
 
   let totalAmount = 0;
-  const items = cart.cart_items.map((item: any) => {
+  const items = (cart.cart_items || []).map((item: any) => {
     const variant = item.product_variants;
     const inventory = variant.inventory_levels?.[0] || { on_hand: 0, reserved: 0 };
     const availableQty = inventory.on_hand - inventory.reserved;
@@ -88,13 +98,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
   }
 
-  const supabase = createServerClient();
+  const supabase = createServerClient() as any;
   const userId = session.user.id;
 
-  let { data: cart } = await supabase.from('carts').select('id').eq('user_id', userId).single();
+  let { data: cart } = await supabase.from('carts').select('id').eq('user_id', userId).single() as { data: MinimalCart | null };
   
   if (!cart) {
-    const { data: newCart, error } = await supabase.from('carts').insert({ user_id: userId }).select().single();
+    const { data: newCart, error } = await supabase.from('carts').insert({ user_id: userId }).select().single() as { data: MinimalCart | null, error: any };
     if (error) return NextResponse.json({ error: 'Failed to create cart' }, { status: 500 });
     cart = newCart;
   }
@@ -103,16 +113,16 @@ export async function POST(request: NextRequest) {
   const { data: existingItem } = await supabase
     .from('cart_items')
     .select('id, quantity')
-    .eq('cart_id', cart.id)
+    .eq('cart_id', cart!.id)
     .eq('variant_id', variant_id)
-    .single();
+    .single() as { data: { id: string; quantity: number } | null };
 
   const newQuantity = (existingItem?.quantity || 0) + quantity;
 
   if (existingItem) {
     await supabase.from('cart_items').update({ quantity: newQuantity }).eq('id', existingItem.id);
   } else {
-    await supabase.from('cart_items').insert({ cart_id: cart.id, variant_id, quantity: newQuantity });
+    await supabase.from('cart_items').insert({ cart_id: cart!.id, variant_id, quantity: newQuantity });
   }
 
   return NextResponse.json({ success: true, message: 'Cart updated' });
@@ -127,9 +137,9 @@ export async function PUT(request: NextRequest) {
   
   if (!variant_id || quantity < 0) return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
 
-  const supabase = createServerClient();
+  const supabase = createServerClient() as any;
   
-  const { data: cart } = await supabase.from('carts').select('id').eq('user_id', session.user.id).single();
+  const { data: cart } = await supabase.from('carts').select('id').eq('user_id', session.user.id).single() as { data: MinimalCart | null };
   if (!cart) return NextResponse.json({ error: 'Cart not found' }, { status: 404 });
 
   if (quantity === 0) {
@@ -148,8 +158,8 @@ export async function DELETE(request: NextRequest) {
   const url = new URL(request.url);
   const variantId = url.searchParams.get('variant_id');
   
-  const supabase = createServerClient();
-  const { data: cart } = await supabase.from('carts').select('id').eq('user_id', session.user.id).single();
+  const supabase = createServerClient() as any;
+  const { data: cart } = await supabase.from('carts').select('id').eq('user_id', session.user.id).single() as { data: MinimalCart | null };
   
   if (!cart) return NextResponse.json({ success: true });
 
